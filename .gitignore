@@ -1,10 +1,8 @@
 
-# 
+# Regenerating Visual Studio directory
 *.vs
-*.bin
-*.obj
 
-# Excluding build folders
+# Build directories
 bin
 obj
 
