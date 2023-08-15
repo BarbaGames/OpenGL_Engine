@@ -3,7 +3,6 @@
 Window::Window(int width, int height, const char* title)
 {
     window = glfwCreateWindow(width, height, title, nullptr, nullptr);
-    glfwInit();
 }
 
 Window::~Window()

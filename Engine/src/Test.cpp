@@ -3,6 +3,8 @@
 
 int main(void)
 {
+    glfwInit();
+
     Window window(640, 480, "Hello World");
 
     if (!window.getWindow())
