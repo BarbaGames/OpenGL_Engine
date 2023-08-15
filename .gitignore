@@ -1,6 +1,8 @@
-
 # Regenerating Visual Studio directory
 *.vs
+
+# Regenerating Jetbrains Rider directory
+.idea/
 
 # Build directories
 bin
