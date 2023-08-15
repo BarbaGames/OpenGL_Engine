@@ -1,5 +1,7 @@
-#include "Window.h"
 #include <glfw3.h>
+
+#include "Window.h"
+#include "Renderer.h"
 
 int main(void)
 {
@@ -23,10 +25,10 @@ int main(void)
     while (!window.shouldClose()) // Verifies if the window closes
     {
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        Renderer::clear();
 
         /* Swap front and back buffers */
-        window.swapBuffers();
+        Renderer::swapBuffers(window.getWindow());
 
         /* Poll for and process events */
         glfwPollEvents();

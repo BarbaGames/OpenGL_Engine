@@ -16,11 +16,6 @@ bool Window::shouldClose() const
     return glfwWindowShouldClose(window);
 }
 
-void Window::swapBuffers() const
-{
-    glfwSwapBuffers(window);
-}
-
 void Window::makeContext() const
 {
     glfwMakeContextCurrent(window);
