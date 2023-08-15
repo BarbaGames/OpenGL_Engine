@@ -3,6 +3,7 @@
 Window::Window(int width, int height, const char* title)
 {
     window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+    glfwInit();
 }
 
 Window::~Window()
@@ -16,12 +17,17 @@ bool Window::shouldClose() const
     return glfwWindowShouldClose(window);
 }
 
-GLFWwindow* Window::getWindow() const
-{
-    return window;
-}
-
 void Window::swapBuffers() const
 {
     glfwSwapBuffers(window);
+}
+
+void Window::makeContext() const
+{
+    glfwMakeContextCurrent(window);
+}
+
+GLFWwindow* Window::getWindow() const
+{
+    return window;
 }

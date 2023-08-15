@@ -9,6 +9,7 @@ public:
     
     bool shouldClose() const;
     void swapBuffers() const;
+    void makeContext() const;
     
     GLFWwindow* getWindow() const;
 private:
