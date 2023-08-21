@@ -1,4 +1,3 @@
-//Inlude dll lib
 
 int main() {
 
