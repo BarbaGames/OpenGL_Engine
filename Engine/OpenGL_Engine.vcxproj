@@ -19,13 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Renderer.cpp" />
-    <ClCompile Include="src\Test.cpp" />
-    <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="..\src\Engine\Engine.cpp" />
+    <ClCompile Include="..\src\Engine\Renderer.cpp" />
+    <ClCompile Include="..\src\Engine\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Renderer.h" />
-    <ClInclude Include="src\Window.h" />
+    <ClInclude Include="..\src\Engine\Engine.h" />
+    <ClInclude Include="..\src\Engine\Renderer.h" />
+    <ClInclude Include="..\src\Engine\Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

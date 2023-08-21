@@ -5,10 +5,22 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\%28temp%29 Engine">
+      <UniqueIdentifier>{8597fa84-6917-4c8f-b481-863b74c7c6c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Main.cpp">
+    <ClCompile Include="..\src\Game\Main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Engine\Engine.cpp">
+      <Filter>Source Files\%28temp%29 Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Engine\Renderer.cpp">
+      <Filter>Source Files\%28temp%29 Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Engine\Window.cpp">
+      <Filter>Source Files\%28temp%29 Engine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
