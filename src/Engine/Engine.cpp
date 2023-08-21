@@ -1,14 +1,18 @@
 #include <glfw3.h>
 #include "Engine.h"
 
-Engine::Engine() {
-	glfwInit();
-}
+namespace MyEngine {
 
-Engine::~Engine() {
-	glfwTerminate();
-}
+	Engine::Engine() {
+		glfwInit();
+	}
 
-void Engine::pollEvents() {
-	glfwPollEvents();
+	Engine::~Engine() {
+		glfwTerminate();
+	}
+
+	void Engine::pollEvents() {
+		glfwPollEvents();
+	}
+
 }

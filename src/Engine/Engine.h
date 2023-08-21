@@ -4,10 +4,14 @@
 #include "Window.h"
 #include "Renderer.h"
 
-class Engine {
-public:
-	Engine();
-	~Engine();
+namespace MyEngine {
 
-	void pollEvents();
-};
+	class Engine {
+	public:
+		Engine();
+		~Engine();
+
+		void pollEvents();
+	};
+
+}

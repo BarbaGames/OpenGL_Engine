@@ -1,5 +1,8 @@
 #include "Engine/Engine.h"
 
+// Namespace temporal
+using namespace MyEngine;
+
 int main() {
 	// Initiating glfw context (As pointer so we can uninit it manually to test)
 	Engine* engine = new Engine();

@@ -1,27 +1,31 @@
 ﻿#include "Window.h"
 
-Window::Window(int width, int height, const char* title)
-{
-    window = glfwCreateWindow(width, height, title, nullptr, nullptr);
-}
+namespace MyEngine {
 
-Window::~Window()
-{
-    glfwDestroyWindow(window);
-    window = nullptr;
-}
+    Window::Window(int width, int height, const char* title)
+    {
+        window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+    }
 
-bool Window::shouldClose() const
-{
-    return glfwWindowShouldClose(window);
-}
+    Window::~Window()
+    {
+        glfwDestroyWindow(window);
+        window = nullptr;
+    }
 
-void Window::makeContext() const
-{
-    glfwMakeContextCurrent(window);
-}
+    bool Window::shouldClose() const
+    {
+        return glfwWindowShouldClose(window);
+    }
 
-GLFWwindow* Window::getWindow() const
-{
-    return window;
+    void Window::makeContext() const
+    {
+        glfwMakeContextCurrent(window);
+    }
+
+    GLFWwindow* Window::getWindow() const
+    {
+        return window;
+    }
+
 }
