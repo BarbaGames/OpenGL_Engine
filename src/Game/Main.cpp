@@ -24,6 +24,8 @@ int main() {
 		// Render here
 		Renderer::clear();
 
+		Renderer::drawTriangleLegacy(-0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f);
+
 		// Swap front and back buffers
 		Renderer::swapBuffers(window.getWindow());
 
