@@ -1,5 +1,3 @@
-#include <glew.h>
-#include <glfw3.h>
 #include "Engine.h"
 
 #include <iostream>
@@ -12,6 +10,9 @@ namespace MyEngine {
 		if (!glfwInit()) {
 			cout << "(Error) Couldn't initialize GLFW context!\n";
 		}
+		else {
+			cout << "Initialized GLFW successfully!\n";
+		}
 	}
 
 	Engine::~Engine() {
@@ -20,7 +21,10 @@ namespace MyEngine {
 
 	void Engine::initGlew() {
 		if (glewInit() != GLEW_OK) {
-			cout << "(Error) Couldn't initialize GLEW context!\n";
+			cout << "(Error) Couldn't initialize GLEW!\n";
+		}
+		else {
+			cout << "Initialized GLEW successfully!\n";
 		}
 	}
 

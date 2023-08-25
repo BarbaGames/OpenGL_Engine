@@ -22,9 +22,11 @@ namespace MyEngine {
         return glfwWindowShouldClose(window);
     }
 
-    void Window::makeContext() const
+    void Window::makeContext(Engine* engine) const
     {
         glfwMakeContextCurrent(window);
+        // Initializing GLEW
+        engine->initGlew();
     }
 
     GLFWwindow* Window::getWindow() const

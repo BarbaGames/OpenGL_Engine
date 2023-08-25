@@ -1,10 +1,11 @@
 #pragma once
-
-// Incluir Enigne tambien trae consigo las demas clases
-#include "Window.h"
-#include "Renderer.h"
+#include <glew.h>
+#include <glfw3.h>
 
 namespace MyEngine {
+	// Circular declaration.
+	class Window;
+	class Renderer;
 
 	class Engine {
 	public:
@@ -17,3 +18,7 @@ namespace MyEngine {
 	};
 
 }
+
+// Circular declaration
+#include "Window.h"
+#include "Renderer.h"

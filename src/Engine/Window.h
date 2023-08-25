@@ -1,5 +1,6 @@
 ﻿#pragma once
-#include <glfw3.h>
+
+#include "Engine.h"
 
 namespace MyEngine {
 
@@ -11,8 +12,8 @@ namespace MyEngine {
 
         // Returns if the window was closed
         bool shouldClose() const;
-        // Adds context to the window (Sets it to glfw by default)
-        void makeContext() const;
+        // Adds glfw context to the window
+        void makeContext(Engine* engine) const;
 
         // Returns the active instance of glfw window
         GLFWwindow* getWindow() const;

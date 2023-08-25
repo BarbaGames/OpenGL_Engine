@@ -1,7 +1,6 @@
 ﻿#pragma once
-#include <glfw3.h>
 
-#include "Window.h"
+#include "Engine.h"
 
 namespace MyEngine {
 
