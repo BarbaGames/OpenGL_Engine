@@ -15,14 +15,17 @@ namespace MyEngine {
         // Adds glfw context to the window
         void makeContext(Engine* engine) const;
 
+        // Enables or disables vsync (This will limit the fps to your monitor's maximum saving you gpu resources.)
+        void setVsyncEnabled(bool set);
+
         // Returns the active instance of glfw window
         GLFWwindow* getWindow() const;
 
         // Returns the pixel width of the window
-        int getWindowWidth();
+        int getWindowWidth() const;
 
         // Returns the pixel height of the window
-        int getWindowHeight();
+        int getWindowHeight() const;
 
         // Receives a pixel position on screen and returns the normalized position for OpenGl.
         float getNormalizedX(int x);

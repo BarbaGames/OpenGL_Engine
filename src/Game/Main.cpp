@@ -19,6 +19,7 @@ int main() {
 
 	// Setting window to glfw context
 	window.makeContext(engine);
+	window.setVsyncEnabled(true);
 
 	// Loop until the user closes the window
 	while (!window.shouldClose()) // Verifies if the window closes
@@ -26,7 +27,7 @@ int main() {
 		Renderer::clear();
 		// Draw here ->
 
-		Renderer::drawTriangleLegacy(-0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f);
+		Renderer::drawTriangle(-0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f);
 		Renderer::drawTriangleLegacy(&window, 10, 80, 80, 10, 80, 80);
 
 		// Swap front and back buffers

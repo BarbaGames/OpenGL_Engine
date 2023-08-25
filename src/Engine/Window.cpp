@@ -29,29 +29,37 @@ namespace MyEngine {
         engine->initGlew();
     }
 
+    void Window::setVsyncEnabled(bool set) {
+        glfwSwapInterval(set);
+    }
+
     GLFWwindow* Window::getWindow() const
     {
         return window;
     }
 
-    int Window::getWindowWidth() {
+    int Window::getWindowWidth() const 
+    {
         int windowWidth;
         glfwGetWindowSize(window, &windowWidth, nullptr);
         return windowWidth;
     }
 
-    int Window::getWindowHeight() {
+    int Window::getWindowHeight() const 
+    {
         int windowHeight;
         glfwGetWindowSize(window, nullptr, &windowHeight);
         return windowHeight;
     }
 
-    float Window::getNormalizedX(int x) {
+    float Window::getNormalizedX(int x) 
+    {
         int windowWidth = getWindowWidth();
         return (2.0f * x) / windowWidth - 1.0f;
     }
 
-    float Window::getNormalizedY(int y) {
+    float Window::getNormalizedY(int y) 
+    {
         int windowHeight = getWindowHeight();
         return (2.0f * y) / windowHeight - 1.0f;
     }
