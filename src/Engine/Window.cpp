@@ -1,5 +1,9 @@
 ﻿#include "Window.h"
 
+#include <iostream>
+
+using namespace std;
+
 namespace MyEngine {
 
     Window::Window(int width, int height, const char* title)

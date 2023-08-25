@@ -19,6 +19,8 @@ int main() {
 
 	// Setting window to glfw context
 	window.makeContext();
+	// Initializing GLEW
+	engine->initGlew();
 
 	// Loop until the user closes the window
 	while (!window.shouldClose()) // Verifies if the window closes

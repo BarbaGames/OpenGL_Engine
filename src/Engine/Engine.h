@@ -11,6 +11,8 @@ namespace MyEngine {
 		Engine();
 		~Engine();
 
+		void initGlew();
+
 		void pollEvents();
 	};
 
