@@ -1,7 +1,9 @@
 #include "Engine/Engine.h"
+#include <iostream>
 
 // Namespace temporal
 using namespace MyEngine;
+using namespace std;
 
 int main() {
 	// Initiating glfw context (As pointer so we can uninit it manually to test)
@@ -21,10 +23,11 @@ int main() {
 	// Loop until the user closes the window
 	while (!window.shouldClose()) // Verifies if the window closes
 	{
-		// Render here
 		Renderer::clear();
+		// Draw here ->
 
 		Renderer::drawTriangleLegacy(-0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f);
+		Renderer::drawTriangleLegacy(&window, 10, 80, 80, 10, 80, 80);
 
 		// Swap front and back buffers
 		Renderer::swapBuffers(window.getWindow());
