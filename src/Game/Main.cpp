@@ -21,6 +21,8 @@ int main() {
 	window.makeContext(engine);
 	window.setVsyncEnabled(true);
 
+	Renderer::tempSetUpRedShader(); // This is a temp function.
+
 	// Loop until the user closes the window
 	while (!window.shouldClose()) // Verifies if the window closes
 	{
