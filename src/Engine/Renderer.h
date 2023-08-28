@@ -13,12 +13,21 @@ namespace MyEngine {
     private:
         static unsigned int compileShader(unsigned int type, string& source);
         static int createShader(string& vertexShader, string& fragmentShader);
+        
     public:
+        struct ShaderProgramSource
+        {
+            string VertexSource;
+            string FragmentSource;
+        };
+        
         // (temp) Creates a shader program that draws everything red
         static void tempSetUpRedShader();
         static void swapBuffers(GLFWwindow* window);
         static void clear();
 
+        // Reads a file containing shaders and returns them
+        static ShaderProgramSource parseShader(const string& filepath);
         // -- Draw functions --
         // Draws a triangle using modern OpenGL with normalized positions
         static void drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y);

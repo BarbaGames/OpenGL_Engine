@@ -1,7 +1,11 @@
 ﻿#include "Renderer.h"
 
-namespace MyEngine {
+#include <fstream>
+#include <sstream>
+#include <string>
 
+namespace MyEngine
+{
     unsigned int Renderer::compileShader(unsigned int type, string& source) {
         unsigned int id = glCreateShader(type);
         const char* src = source.c_str();
@@ -23,7 +27,7 @@ namespace MyEngine {
 
         return id;
     }
-
+    
     int Renderer::createShader(string& vertexShader, string& fragmentShader) {
         unsigned int program = glCreateProgram(); // We create a shader program (this is a collection of compiled and linked shaders that run on our gpu)
         unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader); // We compile our vertex shader
@@ -41,23 +45,10 @@ namespace MyEngine {
     }
 
     void Renderer::tempSetUpRedShader() { // This is a test function that creates a simple hardcoded shader program and applies it
-        string vertexShader = 
-            "#version 330 core\n"
-            "\n"
-            "layout(location = 0) in vec4 position;\n"
-            "\n"
-            "void main() {\n"
-            "   gl_Position = position;\n"
-            "}\n";
-        string fragmentShader =
-            "#version 330 core\n"
-            "\n"
-            "layout(location = 0) out vec4 color;\n"
-            "\n"
-            "void main() {\n"
-            "   color = vec4(1.0, 0.0, 0.0, 1.0);\n"
-            "}\n";
-        unsigned int shader = createShader(vertexShader, fragmentShader);
+
+        ShaderProgramSource source = parseShader("res/Shaders/Basic.shader");
+        
+        unsigned int shader = createShader(source.VertexSource, source.FragmentSource);
 
         glUseProgram(shader);
         glDeleteProgram(shader);
@@ -69,6 +60,64 @@ namespace MyEngine {
 
     void Renderer::clear() {
         glClear(GL_COLOR_BUFFER_BIT);
+    }
+
+    Renderer::ShaderProgramSource Renderer::parseShader(const string& filepath)
+    {
+        ifstream file(filepath); // Opens a stream to the shader file
+
+        enum class ShaderType
+        {
+            NONE = -1,
+            VERTEX,
+            FRAGMENT
+        };
+        
+        stringstream ss[2];
+        
+        ShaderType type = ShaderType::NONE;
+        
+        try
+        {
+            if (file.is_open())
+            {
+                string line;
+                
+                while (getline(file, line)) // Traverses through the shader file
+                {
+                    if(line.find("#shader") != string::npos) // Looks for the line that defines the shader type
+                    {
+                        if(line.find("vertex") != string::npos) // Set mode to vertex
+                            {
+                            type = ShaderType::VERTEX;
+                            }
+                        else if (line.find("fragment") != string::npos) // Set mode to fragment
+                            {
+                            type = ShaderType::FRAGMENT;
+                            
+                            }
+                    }
+                    else
+                    {
+                        ss[static_cast<int>(type)] << line << '\n'; // Saves each shader in this array
+                    }
+                }
+                file.close();
+            }
+            else
+            {
+                throw std::ofstream::failure("Error reading the file.");
+            }
+        }
+        catch (const std::ifstream::failure& ifstreamFailure)
+        {
+            std::cout << "Error opening or reading file: " << ifstreamFailure.what() << std::endl;
+        } catch (const std::exception& e)
+        {
+            std::cout << "Unknown error occurred: " << e.what() << std::endl;
+        }
+        
+        return {ss[0].str(), ss[1].str()}; // Returns a ShaderProgramSource struct that contains the 2 shaders in its strings
     }
 
 
