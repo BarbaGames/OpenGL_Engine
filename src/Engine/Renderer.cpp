@@ -47,23 +47,20 @@ namespace MyEngine
         return program;
     }
 
+    void Renderer::setUpVertexAttributes(unsigned int& buffer) {
+        glEnableVertexAttribArray(0); // We enable vertex attributes
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0); // We set up our attributes layout
+    }
+
     template <typename T, size_t N>
     unsigned int Renderer::createVertexBuffer(const T(&vertexData)[N]) {
         unsigned int buffer;
         glGenBuffers(1, &buffer); // We generate a buffer to store our vertex data in. 1 is the index
         glBindBuffer(GL_ARRAY_BUFFER, buffer); // We bind to that buffer
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW); // We upload our array into our buffer
+        setUpVertexAttributes(buffer);
         glBindBuffer(GL_ARRAY_BUFFER, 0); // We unbind from the buffer
         return buffer;
-    }
-
-    void Renderer::setUpVertexAttributes(unsigned int& buffer) {
-        glBindBuffer(GL_ARRAY_BUFFER, buffer);
-
-        glEnableVertexAttribArray(0); // We enable vertex attributes
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0); // We set up our attributes layout
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
 // -- Public --
@@ -144,7 +141,6 @@ namespace MyEngine
         return {ss[0].str(), ss[1].str()}; // Returns a ShaderProgramSource struct that contains the 2 shaders in its strings
     }
 
-
     void Renderer::drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y) {
         float positions[6] = { // Setting up the vertices in an array (In this case it's only the positions)
             v1x, v1y,
@@ -155,10 +151,22 @@ namespace MyEngine
         // Also remember that this doesn't necesarily need to be an array, it can also be a struct
 
         unsigned int buffer = createVertexBuffer(positions);
-        setUpVertexAttributes(buffer);
 
         glDrawArrays(GL_TRIANGLES, 0, 3); // We draw!
         glDeleteBuffers(1, &buffer); // We're done, so we delete the buffer
+    }
+
+    void Renderer::drawTriangle(Window* window, int v1x, int v1y, int v2x, int v2y, int v3x, int v3y) {
+        float positions[6] = {
+            window->getNormalizedX(v1x), window->getNormalizedX(v1x),
+            window->getNormalizedX(v1x), window->getNormalizedX(v1x),
+            window->getNormalizedX(v1x), window->getNormalizedX(v1x)
+        };
+
+        unsigned int buffer = createVertexBuffer(positions);
+
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDeleteBuffers(1, &buffer);
     }
 
     void Renderer::drawTriangleLegacy(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y) {
@@ -171,9 +179,9 @@ namespace MyEngine
 
     void Renderer::drawTriangleLegacy(Window* window, int v1x, int v1y, int v2x, int v2y, int v3x, int v3y) {
         glBegin(GL_TRIANGLES);
-            glVertex2f(window->getNormalizedX(v1x), window->getNormalizedX(v1y));
-            glVertex2f(window->getNormalizedX(v2x), window->getNormalizedX(v2y));
-            glVertex2f(window->getNormalizedX(v3x), window->getNormalizedX(v3y));
+            glVertex2f(window->getNormalizedX(v1x), window->getNormalizedY(v1y));
+            glVertex2f(window->getNormalizedX(v2x), window->getNormalizedY(v2y));
+            glVertex2f(window->getNormalizedX(v3x), window->getNormalizedY(v3y));
         glEnd();
     }
 }

@@ -55,12 +55,12 @@ namespace MyEngine {
     float Window::getNormalizedX(int x) 
     {
         int windowWidth = getWindowWidth();
-        return (2.0f * x) / windowWidth - 1.0f;
+        return (2.0f * x) / windowWidth - 1.0f; // Shapes are drawn from left > right
     }
 
     float Window::getNormalizedY(int y) 
     {
         int windowHeight = getWindowHeight();
-        return (2.0f * y) / windowHeight - 1.0f;
+        return 1.0f - (2.0f * y) / windowHeight; // Shapes are drawn from top > bottom
     }
 }
