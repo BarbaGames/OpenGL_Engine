@@ -6,6 +6,9 @@
 
 namespace MyEngine
 {
+
+// -- Private --
+
     unsigned int Renderer::compileShader(unsigned int type, string& source) {
         unsigned int id = glCreateShader(type);
         const char* src = source.c_str();
@@ -43,6 +46,27 @@ namespace MyEngine
 
         return program;
     }
+
+    template <typename T, size_t N>
+    unsigned int Renderer::createVertexBuffer(const T(&vertexData)[N]) {
+        unsigned int buffer;
+        glGenBuffers(1, &buffer); // We generate a buffer to store our vertex data in. 1 is the index
+        glBindBuffer(GL_ARRAY_BUFFER, buffer); // We bind to that buffer
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW); // We upload our array into our buffer
+        glBindBuffer(GL_ARRAY_BUFFER, 0); // We unbind from the buffer
+        return buffer;
+    }
+
+    void Renderer::setUpVertexAttributes(unsigned int& buffer) {
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+
+        glEnableVertexAttribArray(0); // We enable vertex attributes
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0); // We set up our attributes layout
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+// -- Public --
 
     void Renderer::tempSetUpRedShader() { // This is a test function that creates a simple hardcoded shader program and applies it
 
@@ -130,15 +154,8 @@ namespace MyEngine
         // Remember vertices can have additional information like "color" and "texture coordinates" that we need to specify later when setting up the attribute layout
         // Also remember that this doesn't necesarily need to be an array, it can also be a struct
 
-        unsigned int buffer;
-        glGenBuffers(1, &buffer); // We generate a buffer to store our vertex data in. 1 is the index
-        glBindBuffer(GL_ARRAY_BUFFER, buffer); // We bind to that buffer
-        glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW); // We upload our array into our buffer
-
-        glEnableVertexAttribArray(0); // We enable vertex attributes
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0); // We set up our attributes layout
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0); // We unbind from the buffer
+        unsigned int buffer = createVertexBuffer(positions);
+        setUpVertexAttributes(buffer);
 
         glDrawArrays(GL_TRIANGLES, 0, 3); // We draw!
         glDeleteBuffers(1, &buffer); // We're done, so we delete the buffer

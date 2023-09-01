@@ -13,7 +13,9 @@ namespace MyEngine {
     private:
         static unsigned int compileShader(unsigned int type, string& source);
         static int createShader(string& vertexShader, string& fragmentShader);
-        
+        template <typename T, size_t N>
+        static unsigned int createVertexBuffer(const T(&vertexData)[N]);
+        static void setUpVertexAttributes(unsigned int& buffer);
     public:
         struct ShaderProgramSource
         {
