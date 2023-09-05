@@ -1,9 +1,18 @@
 #include "BaseGame.h"
-#include <iostream>
 
-using namespace std;
 
 namespace MyEngine {
+	BaseGame::BaseGame() {
+		engine = new Engine();
+		window = new Window(640, 480, "Base Game");
+	}
+
+	BaseGame::~BaseGame() {
+		uninitBase();
+		delete window;
+		delete engine;
+	}
+
 	// Private
 	bool BaseGame::initBase() {
 		if (!window->getWindow()) {
@@ -39,16 +48,6 @@ namespace MyEngine {
 	}
 
 	// Public
-	BaseGame::BaseGame() {
-		engine = new Engine();
-		window = new Window(640, 480, "Base Game");
-	}
-
-	BaseGame::~BaseGame() {
-		uninitBase();
-		delete window;
-		delete engine;
-	}
 
 	void BaseGame::runGame() {
 		initBase();
