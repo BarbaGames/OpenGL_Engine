@@ -5,7 +5,7 @@ namespace MyEngine {
 	bool BaseGame::initBase() {
 		if (!window->getWindow()) {
 			delete engine;
-			return -1;
+			return false;
 		}
 
 		window->makeContext(engine);
