@@ -3,7 +3,7 @@
 
 namespace MyEngine {
 
-	class BaseGame {
+	class DLLExport BaseGame {
 	private:
 		Engine* engine;
 

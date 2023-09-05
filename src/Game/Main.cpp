@@ -6,7 +6,6 @@
 using namespace MyEngine;
 using namespace std;
 
-
 class Pong : public BaseGame {
 private:
 	void init() override;

@@ -1,13 +1,16 @@
 #pragma once
+#define GLEW_STATIC
 #include <glew.h>
-#include <glfw3.h>
+#include <glfw3.h> 
+
+#define DLLExport __declspec(dllexport)
 
 namespace MyEngine {
 	// Circular declaration.
-	class Window;
-	class Renderer;
+	class DLLExport Window;
+	class DLLExport Renderer;
 
-	class Engine {
+	class DLLExport Engine {
 	public:
 		Engine();
 		~Engine();
