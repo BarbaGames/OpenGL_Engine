@@ -47,20 +47,34 @@ namespace MyEngine
         return program;
     }
 
-    void Renderer::setUpVertexAttributes(unsigned int& buffer) {
+    void Renderer::setUpVertexAttributes() {
         glEnableVertexAttribArray(0); // We enable vertex attributes
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0); // We set up our attributes layout
     }
 
+    unsigned int Renderer::createVertexArrayObject() {
+        unsigned int VAO; // Vertex Array Object
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
+        return VAO;
+    }
+
     template <typename T, size_t N>
-    unsigned int Renderer::createVertexBuffer(const T(&vertexData)[N]) {
-        unsigned int buffer;
-        glGenBuffers(1, &buffer); // We generate a buffer to store our vertex data in. 1 is the index
-        glBindBuffer(GL_ARRAY_BUFFER, buffer); // We bind to that buffer
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW); // We upload our array into our buffer
-        setUpVertexAttributes(buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, 0); // We unbind from the buffer
-        return buffer;
+    unsigned int Renderer::createVertexBufferObject(const T(&vertexData)[N]) {
+        unsigned int VBO; // Vertex Buffer Object
+        glGenBuffers(1, &VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW); // We assign the vertex data to this buffer
+        return VBO;
+    }
+
+    template <typename T, size_t N>
+    unsigned int Renderer::createElementBufferObject(const T(&indices)[N]) {
+        unsigned int EBO; // Element Buffer Object
+        glGenBuffers(1, &EBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO); // Note that it's specified the fact that it's an element array
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); // We assign the indices to this buffer
+        return EBO;
     }
 
 // -- Public --
@@ -141,32 +155,56 @@ namespace MyEngine
         return {ss[0].str(), ss[1].str()}; // Returns a ShaderProgramSource struct that contains the 2 shaders in its strings
     }
 
+    template <typename T, typename T2, size_t N, size_t N2>
+    void Renderer::drawShape(const T(&vertexData)[N], const T2(&indices)[N2]) {
+        unsigned int VAO = createVertexArrayObject();
+        unsigned int VBO = createVertexBufferObject(vertexData);
+        unsigned int EBO = createElementBufferObject(indices);
+
+        setUpVertexAttributes();
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, N2, GL_UNSIGNED_INT, 0);
+        glDeleteBuffers(1, &EBO);
+        glDeleteBuffers(1, &VBO);
+        glDeleteVertexArrays(1, &VAO);
+    }
+
+    void Renderer::drawRect(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float v4x, float v4y) {
+        float vertexData[] = {
+            v1x, v1y,
+            v2x, v2y,
+            v3x, v3y,
+            v4x, v4y
+        };
+        unsigned int indices[] = {
+            0, 1, 3,  // First Triangle
+            1, 2, 3   // Second Triangle
+        };
+        drawShape(vertexData, indices);
+    }
+
     void Renderer::drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y) {
-        float positions[6] = { // Setting up the vertices in an array (In this case it's only the positions)
+        float vertexData[] = {
             v1x, v1y,
             v2x, v2y,
             v3x, v3y
         };
-        // Remember vertices can have additional information like "color" and "texture coordinates" that we need to specify later when setting up the attribute layout
-        // Also remember that this doesn't necesarily need to be an array, it can also be a struct
-
-        unsigned int buffer = createVertexBuffer(positions);
-
-        glDrawArrays(GL_TRIANGLES, 0, 3); // We draw!
-        glDeleteBuffers(1, &buffer); // We're done, so we delete the buffer
+        unsigned int indices[] = {
+            0, 1, 2
+        };
+        drawShape(vertexData, indices);
     }
 
     void Renderer::drawTriangle(Window* window, int v1x, int v1y, int v2x, int v2y, int v3x, int v3y) {
-        float positions[6] = {
-            window->getNormalizedX(v1x), window->getNormalizedX(v1x),
-            window->getNormalizedX(v1x), window->getNormalizedX(v1x),
-            window->getNormalizedX(v1x), window->getNormalizedX(v1x)
+        float vertexData[] = {
+            window->getNormalizedX(v1x), window->getNormalizedY(v1y),
+            window->getNormalizedX(v2x), window->getNormalizedY(v2y),
+            window->getNormalizedX(v3x), window->getNormalizedY(v3y)
         };
-
-        unsigned int buffer = createVertexBuffer(positions);
-
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glDeleteBuffers(1, &buffer);
+        unsigned int indices[] = {
+            0, 1, 2
+        };
+        drawShape(vertexData, indices);
     }
 
     void Renderer::drawTriangleLegacy(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y) {

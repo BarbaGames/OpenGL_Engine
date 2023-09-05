@@ -29,8 +29,11 @@ int main() {
 		Renderer::clear();
 		// Draw here ->
 
-		Renderer::drawTriangle(-0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f);
-		Renderer::drawTriangleLegacy(&window, 10, 80, 80, 10, 80, 80);
+		Renderer::drawRect(0.5f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f);
+		Renderer::drawTriangle(&window, 10, 80, 80, 10, 80, 80);
+
+		//Renderer::drawTriangle(-0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f);
+		//Renderer::drawTriangleLegacy(&window, 10, 80, 80, 10, 80, 80);
 
 		// Swap front and back buffers
 		Renderer::swapBuffers(window.getWindow());
