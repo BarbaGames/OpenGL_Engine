@@ -1,4 +1,7 @@
 #include "BaseGame.h"
+#include <iostream>
+
+using namespace std;
 
 namespace MyEngine {
 	// Private
@@ -19,9 +22,6 @@ namespace MyEngine {
 	void BaseGame::updateBase() {
 		while (!window->shouldClose()) // Verifies if the window closes
 		{
-			Renderer::clear();
-			// Draw here ->
-
 			update();
 
 			// Swap front and back buffers
@@ -42,11 +42,12 @@ namespace MyEngine {
 		engine = new Engine();
 		window = new Window(640, 480, "Base Game");
 		initBase();
+		updateBase();
 	}
 
 	BaseGame::~BaseGame() {
+		uninitBase();
 		delete window;
 		delete engine;
-		uninitBase();
 	}
 }

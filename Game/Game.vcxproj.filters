@@ -22,5 +22,8 @@
     <ClCompile Include="..\src\Engine\Window.cpp">
       <Filter>Source Files\%28temp%29 Engine</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Engine\BaseGame.cpp">
+      <Filter>Source Files\%28temp%29 Engine</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

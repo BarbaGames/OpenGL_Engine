@@ -1,10 +1,60 @@
 #include "Engine/Engine.h"
 #include <iostream>
 
+#include "Engine/BaseGame.h"
+
 // Namespace temporal
 using namespace MyEngine;
 using namespace std;
 
+
+class Pong : public BaseGame {
+private:
+	void init() override;
+	void update() override;
+	void uninit() override;
+	void draw();
+public:
+	Pong();
+	~Pong() override;
+};
+
+Pong::Pong() {
+
+}
+
+Pong::~Pong() {
+
+}
+
+void Pong::init() {
+	cout << "hi\n";
+}
+
+void Pong::update() {
+	cout << ".";
+	draw();
+}
+
+void Pong::uninit() {
+
+}
+
+void Pong::draw() {
+	Renderer::clear();
+
+	Renderer::drawRect(0.5f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f);
+	//Renderer::drawTriangle(&window, 10, 80, 80, 10, 80, 80);
+}
+
+int main() {
+	//Pong* myGame = new Pong();
+	Pong myGame();
+	//delete myGame;
+	return 0;
+}
+
+/*
 int main() {
 	// Initiating glfw context (As pointer so we can uninit it manually to test)
 	Engine* engine = new Engine();
@@ -43,3 +93,4 @@ int main() {
 	delete engine; // We uninit engine
 	return 0;
 }
+*/
