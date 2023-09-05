@@ -13,12 +13,14 @@ namespace MyEngine {
 	protected:
 		Window* window;
 
-		virtual void init() = 0;
-		virtual void update() = 0;
-		virtual void uninit() = 0;
+		virtual void init() {};
+		virtual void update() {};
+		virtual void uninit() {};
 	public:
 		BaseGame();
 		virtual ~BaseGame();
+
+		void runGame();
 	};
 
 }

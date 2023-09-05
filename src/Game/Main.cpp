@@ -28,11 +28,11 @@ Pong::~Pong() {
 }
 
 void Pong::init() {
-	cout << "hi\n";
+
 }
 
 void Pong::update() {
-	cout << ".";
+
 	draw();
 }
 
@@ -48,9 +48,8 @@ void Pong::draw() {
 }
 
 int main() {
-	//Pong* myGame = new Pong();
-	Pong myGame();
-	//delete myGame;
+	Pong myGame;
+	myGame.runGame();
 	return 0;
 }
 

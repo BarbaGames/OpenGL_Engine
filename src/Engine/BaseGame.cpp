@@ -17,6 +17,7 @@ namespace MyEngine {
 		Renderer::tempSetUpRedShader();
 
 		init();
+		updateBase();
 	}
 
 	void BaseGame::updateBase() {
@@ -41,13 +42,15 @@ namespace MyEngine {
 	BaseGame::BaseGame() {
 		engine = new Engine();
 		window = new Window(640, 480, "Base Game");
-		initBase();
-		updateBase();
 	}
 
 	BaseGame::~BaseGame() {
 		uninitBase();
 		delete window;
 		delete engine;
+	}
+
+	void BaseGame::runGame() {
+		initBase();
 	}
 }
