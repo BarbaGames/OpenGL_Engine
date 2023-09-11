@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Engine/BaseGame.h"
+#include "BaseGame.h"
 
 // Namespace temporal
 using namespace MyEngine;

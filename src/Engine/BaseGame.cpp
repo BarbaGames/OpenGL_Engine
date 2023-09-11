@@ -1,6 +1,5 @@
 #include "BaseGame.h"
 
-
 namespace MyEngine {
 	BaseGame::BaseGame() {
 		engine = new Engine();
@@ -27,6 +26,7 @@ namespace MyEngine {
 
 		init();
 		updateBase();
+		return true;
 	}
 
 	void BaseGame::updateBase() {
