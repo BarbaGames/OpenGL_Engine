@@ -36,7 +36,7 @@ namespace MyEngine {
         // -- Draw functions --
         template <typename T, typename T2, size_t N, size_t N2>
         static void drawShape(const T(&vertexData)[N], const T2(&indices)[N2]);
-        static void drawRect(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float v4x, float v4y);
+        static void drawRect(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float v4x, float v4y, float r, float g, float b);
         // Draws a triangle using modern OpenGL with normalized positions
         static void drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y);
         // Draws a triangle using modern OpenGL with window pixel positions

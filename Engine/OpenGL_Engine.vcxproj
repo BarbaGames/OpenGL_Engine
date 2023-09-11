@@ -121,6 +121,10 @@
     <PostBuildEvent>
       <Command>"$(SolutionDir)scripts\engine_post_build.bat" "$(SolutionDir)" "$(Platform)" "$(Configuration)"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -144,6 +148,10 @@
     <PostBuildEvent>
       <Command>"$(SolutionDir)scripts\engine_post_build.bat" "$(SolutionDir)" "$(Platform)" "$(Configuration)"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

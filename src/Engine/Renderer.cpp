@@ -48,8 +48,12 @@ namespace MyEngine
     }
 
     void Renderer::setUpVertexAttributes() {
-        glEnableVertexAttribArray(0); // We enable vertex attributes
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0); // We set up our attributes layout
+        // position attribute
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+        // color attribute
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
     }
 
     unsigned int Renderer::createVertexArrayObject() {
@@ -169,12 +173,12 @@ namespace MyEngine
         glDeleteVertexArrays(1, &VAO);
     }
 
-    void Renderer::drawRect(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float v4x, float v4y) {
+    void Renderer::drawRect(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float v4x, float v4y, float r, float g, float b) {
         float vertexData[] = {
-            v1x, v1y,
-            v2x, v2y,
-            v3x, v3y,
-            v4x, v4y
+            v1x, v1y, 0.0f, /**/ r, g, b,
+            v2x, v2y, 0.0f, /**/ r, g, b,
+            v3x, v3y, 0.0f, /**/ r, g, b,
+            v4x, v4y, 0.0f, /**/ r, g, b
         };
         unsigned int indices[] = {
             0, 1, 3,  // First Triangle
@@ -185,9 +189,9 @@ namespace MyEngine
 
     void Renderer::drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y) {
         float vertexData[] = {
-            v1x, v1y,
-            v2x, v2y,
-            v3x, v3y
+            v1x, v1y, 0.0f, /**/ 1.0f, 0.0f, 0.0f,
+            v2x, v2y, 0.0f, /**/ 1.0f, 0.0f, 0.0f,
+            v3x, v3y, 0.0f, /**/ 1.0f, 0.0f, 0.0f
         };
         unsigned int indices[] = {
             0, 1, 2
@@ -197,9 +201,9 @@ namespace MyEngine
 
     void Renderer::drawTriangle(Window* window, int v1x, int v1y, int v2x, int v2y, int v3x, int v3y) {
         float vertexData[] = {
-            window->getNormalizedX(v1x), window->getNormalizedY(v1y),
-            window->getNormalizedX(v2x), window->getNormalizedY(v2y),
-            window->getNormalizedX(v3x), window->getNormalizedY(v3y)
+            window->getNormalizedX(v1x), window->getNormalizedY(v1y), 0.0f, /**/ 1.0f, 0.0f, 0.0f,
+            window->getNormalizedX(v2x), window->getNormalizedY(v2y), 0.0f, /**/ 0.0f, 1.0f, 0.0f,
+            window->getNormalizedX(v3x), window->getNormalizedY(v3y), 0.0f, /**/ 0.0f, 0.0f, 1.0f
         };
         unsigned int indices[] = {
             0, 1, 2

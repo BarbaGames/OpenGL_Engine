@@ -41,7 +41,7 @@ void Pong::uninit() {
 void Pong::draw() {
 	Renderer::clear();
 
-	Renderer::drawRect(0.5f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f);
+	Renderer::drawRect(0.5f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, 1.0f, 0.5f, 0.0f);
 	Renderer::drawTriangle(window, 10, 80, 80, 10, 80, 80);
 }
 
