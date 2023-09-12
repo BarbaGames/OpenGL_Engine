@@ -3,6 +3,7 @@ set solution_dir=%~1
 set platform=%~2
 set config=%~3
 
+if exist "%solution_dir%\lib\Engine" (rmdir /s /q "%solution_dir%\lib\Engine")
 mkdir "%solution_dir%\lib\Engine\lib"
 REM Copying the .lib file
 xcopy /e /v /y "%solution_dir%\bin\Engine\%platform%_%config%\Engine.lib" "%solution_dir%\lib\Engine\lib"
