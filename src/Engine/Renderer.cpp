@@ -3,9 +3,11 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace MyEngine
 {
+    glm::mat4 Renderer::mvpMatrix;
 
 // -- Private --
 
@@ -44,6 +46,13 @@ namespace MyEngine
         glDeleteShader(vs); // We delete the shaders (They're now linked to our program so we no longer need these shader objects)
         glDeleteShader(fs);
 
+        // Get the location of the MVP matrix uniform
+        int mvpLocation = glGetUniformLocation(program, "u_MVP");
+
+        // Set the MVP matrix uniform
+        glUseProgram(program);
+        glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+        
         return program;
     }
 
@@ -225,5 +234,10 @@ namespace MyEngine
             glVertex2f(window->getNormalizedX(v2x), window->getNormalizedY(v2y));
             glVertex2f(window->getNormalizedX(v3x), window->getNormalizedY(v3y));
         glEnd();
+    }
+
+    void Renderer::setMVPMatrix(const glm::mat4& mvp)
+    {
+        mvpMatrix = mvp;
     }
 }

@@ -3,6 +3,7 @@
 #include "Engine.h"
 
 #include <iostream>
+#include <glm.hpp>
 
 using namespace std;
 
@@ -19,6 +20,9 @@ namespace MyEngine {
         static unsigned int createVertexBufferObject(const T(&vertexData)[N]);
         template <typename T, size_t N>
         static unsigned int createElementBufferObject(const T(&indices)[N]);
+        
+        static glm::mat4 mvpMatrix;
+
     public:
         struct ShaderProgramSource
         {
@@ -30,7 +34,6 @@ namespace MyEngine {
         static void tempSetUpRedShader();
         static void swapBuffers(GLFWwindow* window);
         static void clear();
-
         // Reads a file containing shaders and returns them
         static ShaderProgramSource parseShader(const string& filepath);
         // -- Draw functions --
@@ -45,6 +48,8 @@ namespace MyEngine {
         static void drawTriangleLegacy(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y);
         // Draws a triangle using legacy OpenGL with window pixel positions
         static void drawTriangleLegacy(Window* window, int v1x, int v1y, int v2x, int v2y, int v3x, int v3y);
+
+        static void setMVPMatrix(const glm::mat4& mvp);
     };
 
 }
