@@ -47,7 +47,7 @@ namespace MyEngine
         glDeleteShader(fs);
 
         // Get the location of the MVP matrix uniform
-        int mvpLocation = glGetUniformLocation(program, "u_MVP");
+        unsigned int mvpLocation = glGetUniformLocation(program, "u_MVP");
 
         // Set the MVP matrix uniform
         glUseProgram(program);
