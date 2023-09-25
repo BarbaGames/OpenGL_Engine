@@ -7,8 +7,8 @@
 
 namespace MyEngine
 {
-    glm::mat4 Renderer::mvpMatrix;
-
+    glm::mat4 Renderer::u_MVP = glm::mat4(1.0f);
+    unsigned int Renderer::shaderProgram;
 // -- Private --
 
     unsigned int Renderer::compileShader(unsigned int type, string& source) {
@@ -34,26 +34,23 @@ namespace MyEngine
     }
     
     int Renderer::createShader(string& vertexShader, string& fragmentShader) {
-        unsigned int program = glCreateProgram(); // We create a shader program (this is a collection of compiled and linked shaders that run on our gpu)
+        shaderProgram = glCreateProgram(); // We create a shader program (this is a collection of compiled and linked shaders that run on our gpu)
         unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader); // We compile our vertex shader
         unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader); // We compile our fragment shader
 
-        glAttachShader(program, vs); // We attach our shaders to our program
-        glAttachShader(program, fs);
-        glLinkProgram(program); // We link the shaders
-        glValidateProgram(program);
+        glAttachShader(shaderProgram, vs); // We attach our shaders to our program
+        glAttachShader(shaderProgram, fs);
+        glLinkProgram(shaderProgram); // We link the shaders
 
         glDeleteShader(vs); // We delete the shaders (They're now linked to our program so we no longer need these shader objects)
         glDeleteShader(fs);
-
-        // Get the location of the MVP matrix uniform
-        unsigned int mvpLocation = glGetUniformLocation(program, "u_MVP");
-
-        // Set the MVP matrix uniform
-        glUseProgram(program);
-        glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
         
-        return program;
+       
+        
+        // Set the MVP matrix uniform
+        glUseProgram(shaderProgram);
+        
+        return shaderProgram;
     }
 
     void Renderer::setUpVertexAttributes() {
@@ -63,6 +60,10 @@ namespace MyEngine
         // color attribute
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
+        
+        // Get the location of the MVP matrix uniform
+        unsigned int mvpLocation = glGetUniformLocation(shaderProgram, "u_MVP");
+        glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(u_MVP));
     }
 
     unsigned int Renderer::createVertexArrayObject() {
@@ -236,8 +237,13 @@ namespace MyEngine
         glEnd();
     }
 
+    double Renderer::getFrameTime()
+    {
+        return glfwGetTime();
+    }
+
     void Renderer::setMVPMatrix(const glm::mat4& mvp)
     {
-        mvpMatrix = mvp;
+        u_MVP = mvp;
     }
 }

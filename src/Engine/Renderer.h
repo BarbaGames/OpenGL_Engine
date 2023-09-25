@@ -21,7 +21,8 @@ namespace MyEngine {
         template <typename T, size_t N>
         static unsigned int createElementBufferObject(const T(&indices)[N]);
         
-        static glm::mat4 mvpMatrix;
+        static glm::mat4 u_MVP;
+        static unsigned int shaderProgram;
 
     public:
         struct ShaderProgramSource
@@ -49,6 +50,7 @@ namespace MyEngine {
         // Draws a triangle using legacy OpenGL with window pixel positions
         static void drawTriangleLegacy(Window* window, int v1x, int v1y, int v2x, int v2y, int v3x, int v3y);
 
+        static double getFrameTime();
         static void setMVPMatrix(const glm::mat4& mvp);
     };
 
