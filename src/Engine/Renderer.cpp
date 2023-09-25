@@ -7,9 +7,10 @@
 
 namespace MyEngine
 {
-    glm::mat4 Renderer::u_MVP = glm::mat4(1.0f);
-    unsigned int Renderer::shaderProgram;
 // -- Private --
+    unsigned int Renderer::shaderProgram = 0;
+    glm::mat4 Renderer::projMatrix = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+    glm::mat4 Renderer::viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
     unsigned int Renderer::compileShader(unsigned int type, string& source) {
         unsigned int id = glCreateShader(type);
@@ -34,36 +35,35 @@ namespace MyEngine
     }
     
     int Renderer::createShader(string& vertexShader, string& fragmentShader) {
-        shaderProgram = glCreateProgram(); // We create a shader program (this is a collection of compiled and linked shaders that run on our gpu)
+        unsigned int program = glCreateProgram(); // We create a shader program (this is a collection of compiled and linked shaders that run on our gpu)
         unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader); // We compile our vertex shader
         unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader); // We compile our fragment shader
 
-        glAttachShader(shaderProgram, vs); // We attach our shaders to our program
-        glAttachShader(shaderProgram, fs);
-        glLinkProgram(shaderProgram); // We link the shaders
+        glAttachShader(program, vs); // We attach our shaders to our program
+        glAttachShader(program, fs);
+        glLinkProgram(program); // We link the shaders
+        glValidateProgram(program);
 
         glDeleteShader(vs); // We delete the shaders (They're now linked to our program so we no longer need these shader objects)
         glDeleteShader(fs);
-        
-       
-        
+
         // Set the MVP matrix uniform
-        glUseProgram(shaderProgram);
+        glUseProgram(program);
         
-        return shaderProgram;
+        return program;
     }
 
-    void Renderer::setUpVertexAttributes() {
+    void Renderer::setUpVertexAttributes(glm::mat4 modelMatrix) {
         // position attribute
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
         // color attribute
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
-        
-        // Get the location of the MVP matrix uniform
-        unsigned int mvpLocation = glGetUniformLocation(shaderProgram, "u_MVP");
-        glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(u_MVP));
+        // mvp
+        glm::mat4 mvp = modelMatrix * viewMatrix * projMatrix;
+        int mvpLocation = glGetUniformLocation(shaderProgram, "u_MVP");
+        glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
     }
 
     unsigned int Renderer::createVertexArrayObject() {
@@ -93,14 +93,17 @@ namespace MyEngine
 
 // -- Public --
 
-    void Renderer::tempSetUpRedShader() { // This is a test function that creates a simple hardcoded shader program and applies it
+    void Renderer::loadBasicShader() { // This is a test function that creates a simple hardcoded shader program and applies it
 
         ShaderProgramSource source = parseShader("res/Shaders/Basic.shader");
         
-        unsigned int shader = createShader(source.VertexSource, source.FragmentSource);
+        shaderProgram = createShader(source.VertexSource, source.FragmentSource);
 
-        glUseProgram(shader);
-        glDeleteProgram(shader);
+        glUseProgram(shaderProgram);
+    }
+
+    void Renderer::unloadBasicShader() {
+        glDeleteProgram(shaderProgram);
     }
 
     void Renderer::swapBuffers(GLFWwindow* window) {
@@ -170,12 +173,12 @@ namespace MyEngine
     }
 
     template <typename T, typename T2, size_t N, size_t N2>
-    void Renderer::drawShape(const T(&vertexData)[N], const T2(&indices)[N2]) {
+    void Renderer::drawShape(const T(&vertexData)[N], const T2(&indices)[N2], glm::mat4 modelMatrix) {
         unsigned int VAO = createVertexArrayObject();
         unsigned int VBO = createVertexBufferObject(vertexData);
         unsigned int EBO = createElementBufferObject(indices);
 
-        setUpVertexAttributes();
+        setUpVertexAttributes(modelMatrix);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, N2, GL_UNSIGNED_INT, 0);
         glDeleteBuffers(1, &EBO);
@@ -194,31 +197,24 @@ namespace MyEngine
             0, 1, 3,  // First Triangle
             1, 2, 3   // Second Triangle
         };
-        drawShape(vertexData, indices);
+        glm::mat4 modelMatrix;
+        modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+        drawShape(vertexData, indices, modelMatrix);
     }
 
-    void Renderer::drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y) {
+    void Renderer::drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float r, float g, float b, float rotation) {
         float vertexData[] = {
-            v1x, v1y, 0.0f, /**/ 1.0f, 0.0f, 0.0f,
-            v2x, v2y, 0.0f, /**/ 1.0f, 0.0f, 0.0f,
-            v3x, v3y, 0.0f, /**/ 1.0f, 0.0f, 0.0f
+            v1x, v1y, 0.0f, /**/ r, g, b,
+            v2x, v2y, 0.0f, /**/ r, g, b,
+            v3x, v3y, 0.0f, /**/ r, g, b
         };
         unsigned int indices[] = {
             0, 1, 2
         };
-        drawShape(vertexData, indices);
-    }
-
-    void Renderer::drawTriangle(Window* window, int v1x, int v1y, int v2x, int v2y, int v3x, int v3y) {
-        float vertexData[] = {
-            window->getNormalizedX(v1x), window->getNormalizedY(v1y), 0.0f, /**/ 1.0f, 0.0f, 0.0f,
-            window->getNormalizedX(v2x), window->getNormalizedY(v2y), 0.0f, /**/ 0.0f, 1.0f, 0.0f,
-            window->getNormalizedX(v3x), window->getNormalizedY(v3y), 0.0f, /**/ 0.0f, 0.0f, 1.0f
-        };
-        unsigned int indices[] = {
-            0, 1, 2
-        };
-        drawShape(vertexData, indices);
+        glm::mat4 modelMatrix;
+        modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+        drawShape(vertexData, indices, modelMatrix);
     }
 
     void Renderer::drawTriangleLegacy(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y) {
@@ -229,21 +225,15 @@ namespace MyEngine
         glEnd();
     }
 
-    void Renderer::drawTriangleLegacy(Window* window, int v1x, int v1y, int v2x, int v2y, int v3x, int v3y) {
-        glBegin(GL_TRIANGLES);
-            glVertex2f(window->getNormalizedX(v1x), window->getNormalizedY(v1y));
-            glVertex2f(window->getNormalizedX(v2x), window->getNormalizedY(v2y));
-            glVertex2f(window->getNormalizedX(v3x), window->getNormalizedY(v3y));
-        glEnd();
+    void Renderer::set2DProjectionMatrix(float width, float height) {
+        projMatrix = glm::ortho(0.0f, width, height, 0.0f, -1.0f, 1.0f);
     }
 
-    double Renderer::getFrameTime()
-    {
+    void Renderer::setViewMatrix(float x, float y, float z) {
+        viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
+    }
+
+    double Renderer::getFrameTime() {
         return glfwGetTime();
-    }
-
-    void Renderer::setMVPMatrix(const glm::mat4& mvp)
-    {
-        u_MVP = mvp;
     }
 }

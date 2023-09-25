@@ -9,6 +9,7 @@ namespace MyEngine {
     Window::Window(int width, int height, const char* title)
     {
         window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+        Renderer::set2DProjectionMatrix(static_cast<float>(width), static_cast<float>(height));
     }
 
     Window::~Window()
@@ -50,17 +51,5 @@ namespace MyEngine {
         int windowHeight;
         glfwGetWindowSize(window, nullptr, &windowHeight);
         return windowHeight;
-    }
-
-    float Window::getNormalizedX(int x) 
-    {
-        int windowWidth = getWindowWidth();
-        return (2.0f * x) / windowWidth - 1.0f; // Shapes are drawn from left > right
-    }
-
-    float Window::getNormalizedY(int y) 
-    {
-        int windowHeight = getWindowHeight();
-        return 1.0f - (2.0f * y) / windowHeight; // Shapes are drawn from top > bottom
     }
 }
