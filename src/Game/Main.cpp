@@ -2,70 +2,79 @@
 
 #include "BaseGame.h"
 
-// Namespace temporal
+// Ejercicio 3
 using namespace MyEngine;
 using namespace std;
 
-class Pong : public BaseGame {
+struct Vector3 {
+	float x;
+	float y;
+	float z;
+};
+
+class Parcial : public BaseGame {
 private:
     void init() override;
     void update() override;
     void uninit() override;
     void draw();
     glm::mat4 trans;
-    float x;
-    float y;
+	Vector3 v1;
+	Vector3 v2;
+	Vector3 v3;
 
 public:
-	Pong();
-	~Pong() override;
+	Parcial();
+	~Parcial() override;
 };
 
-Pong::Pong() {
+Parcial::Parcial() {
+    trans = glm::mat4(1.0f);
+	v1 = { 0.0f, 100.0f, 0.0f };
+	v2 = { 50.0f, 0.0f, 0.0f };
+	v3 = { 100.0f, 100.0f, 0.0f };
+}
+
+Parcial::~Parcial() {
 
 }
 
-Pong::~Pong() {
-
-}
-
-void Pong::init()
+void Parcial::init()
 {
-    //scale and rotation test
-    trans = glm::mat4(1.0f);
-    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-    Renderer::setModelMatrix(trans);
 
-    trans = glm::mat4(1.0f);
-    
 }
 
-void Pong::update() {
+void Parcial::update() {
 
 	draw();
 }
 
-void Pong::uninit() {
+void Parcial::uninit() {
 
 }
 
-void Pong::draw() {
+void Parcial::draw() {
 	Renderer::clear();
 
-    Renderer::setModelMatrix(glm::mat4(1.f)); // this line is so that the Rect doesn't get rotated
+	trans = glm::translate(glm::mat4(1.0f), glm::vec3(-.8f + (Renderer::getFrameTime() * .25f),
+													  -.7f + (Renderer::getFrameTime() * .25f),
+													  0.0f));
+	trans = glm::rotate(trans, glm::radians(((float)Renderer::getFrameTime() * 50.0f)), glm::vec3(0.0f, 0.0f, 1.0f));
 
-    Renderer::drawRect(200, 200, 200, 100, 100, 100, 100, 200, 0.5f, 0.0f, 1.0f);
+	Renderer::setModelMatrix(trans);
 
-    trans = glm::rotate(trans, glm::radians(1.f), glm::vec3(0.0f, 0.0f, 1.0f));
-
-    Renderer::setModelMatrix(trans);
-
-    Renderer::drawTriangle(10, 80, 80, 10, 80, 80, 1.0f, 0.5f, 0.0f);
+	Renderer::drawTriangle( (window->getWindowWidth() * .4f) + v1.x,
+							(window->getWindowHeight() * .4f) + v1.y,
+							(window->getWindowWidth() * .4f) + v2.x,
+							(window->getWindowHeight() * .4f) + v2.y,
+							(window->getWindowWidth() * .4f) + v3.x,
+							(window->getWindowHeight() * .4f) + v3.y,
+							1.0f, 0.2f, 0.2f);
+	trans = glm::mat4(1.0f);
 }
 
 int main() {
-	Pong myGame;
+	Parcial myGame;
 	myGame.runGame();
 	return 0;
 }
