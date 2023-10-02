@@ -16,11 +16,10 @@ namespace MyEngine {
         static unsigned int shaderProgram;
         static glm::mat4 projMatrix;
         static glm::mat4 viewMatrix;
-        static glm::mat4 modelMatrix;
 
         static unsigned int compileShader(unsigned int type, string& source);
         static int createShader(string& vertexShader, string& fragmentShader);
-        static void setUpVertexAttributes();
+        static void setUpVertexAttributes(glm::mat4 modelMatrix);
         static unsigned int createVertexArrayObject();
         template <typename T, size_t N>
         static unsigned int createVertexBufferObject(const T(&vertexData)[N]);
@@ -43,19 +42,16 @@ namespace MyEngine {
         static ShaderProgramSource parseShader(const string& filepath);
         // -- Draw functions --
         template <typename T, typename T2, size_t N, size_t N2>
-        static void drawShape(const T(&vertexData)[N], const T2(&indices)[N2]);
+        static void drawShape(const T(&vertexData)[N], const T2(&indices)[N2], glm::mat4 modelMatrix);
         static void drawRect(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float v4x, float v4y, float r, float g, float b);
         // Draws a triangle using modern OpenGL with normalized positions
-        static void drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float r, float g, float b);
+        static void drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float r, float g, float b, float rotation);
         // Draws a triangle using legacy OpenGL with normalized positions
         static void drawTriangleLegacy(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y);
         // Sets the dimentions of the projection matrix using a width and height
         static void set2DProjectionMatrix(float width, float height);
         // Sets the position of the view matrix
         static void setViewMatrix(float x, float y, float z);
-        static void setViewMatrix(glm::mat4 newViewMatrix);
-        // Sets the model matrix
-        static void setModelMatrix(glm::mat4 newModelMatrix);
 
         static double getFrameTime();
     };

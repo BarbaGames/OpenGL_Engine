@@ -11,8 +11,7 @@ namespace MyEngine
     unsigned int Renderer::shaderProgram = 0;
     glm::mat4 Renderer::projMatrix = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
     glm::mat4 Renderer::viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-    glm::mat4 Renderer::modelMatrix = glm::mat4(1.0f);
-    
+
     unsigned int Renderer::compileShader(unsigned int type, string& source) {
         unsigned int id = glCreateShader(type);
         const char* src = source.c_str();
@@ -54,7 +53,7 @@ namespace MyEngine
         return program;
     }
 
-    void Renderer::setUpVertexAttributes() {
+    void Renderer::setUpVertexAttributes(glm::mat4 modelMatrix) {
         // position attribute
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
@@ -174,12 +173,12 @@ namespace MyEngine
     }
 
     template <typename T, typename T2, size_t N, size_t N2>
-    void Renderer::drawShape(const T(&vertexData)[N], const T2(&indices)[N2]) {
+    void Renderer::drawShape(const T(&vertexData)[N], const T2(&indices)[N2], glm::mat4 modelMatrix) {
         unsigned int VAO = createVertexArrayObject();
         unsigned int VBO = createVertexBufferObject(vertexData);
         unsigned int EBO = createElementBufferObject(indices);
 
-        setUpVertexAttributes();
+        setUpVertexAttributes(modelMatrix);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, N2, GL_UNSIGNED_INT, 0);
         glDeleteBuffers(1, &EBO);
@@ -198,11 +197,12 @@ namespace MyEngine
             0, 1, 3,  // First Triangle
             1, 2, 3   // Second Triangle
         };
-        
-        drawShape(vertexData, indices);
+        glm::mat4 modelMatrix;
+        modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+        drawShape(vertexData, indices, modelMatrix);
     }
 
-    void Renderer::drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float r, float g, float b) {
+    void Renderer::drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float r, float g, float b, float rotation) {
         float vertexData[] = {
             v1x, v1y, 0.0f, /**/ r, g, b,
             v2x, v2y, 0.0f, /**/ r, g, b,
@@ -211,8 +211,10 @@ namespace MyEngine
         unsigned int indices[] = {
             0, 1, 2
         };
-        
-        drawShape(vertexData, indices);
+        glm::mat4 modelMatrix;
+        modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+        drawShape(vertexData, indices, modelMatrix);
     }
 
     void Renderer::drawTriangleLegacy(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y) {
@@ -229,16 +231,6 @@ namespace MyEngine
 
     void Renderer::setViewMatrix(float x, float y, float z) {
         viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
-    }
-
-    void Renderer::setViewMatrix(glm::mat4 newViewMatrix)
-    {
-        viewMatrix = newViewMatrix;
-    }
-
-    void Renderer::setModelMatrix(glm::mat4 newModelMatrix)
-    {
-        modelMatrix = newModelMatrix;
     }
 
     double Renderer::getFrameTime() {
