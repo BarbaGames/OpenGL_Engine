@@ -6,6 +6,12 @@ namespace MyEngine {
 
     class Window
     {
+    private:
+        static int windowWidth;
+        static int windowHeight;
+
+        GLFWwindow* window;
+
     public:
         Window(int width, int height, const char* title);
         ~Window();
@@ -22,18 +28,10 @@ namespace MyEngine {
         GLFWwindow* getWindow() const;
 
         // Returns the pixel width of the window
-        int getWindowWidth() const;
+        static int getWindowWidth();
 
         // Returns the pixel height of the window
-        int getWindowHeight() const;
-
-        // Receives a pixel position on screen and returns the normalized position for OpenGl.
-        float getNormalizedX(int x);
-        float getNormalizedY(int y);
-
-    private:
-
-        GLFWwindow* window;
+        static int getWindowHeight();
     };
 
 }

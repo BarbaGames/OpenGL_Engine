@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine.h"
 
+#include "Rectangle.h"
+
 namespace MyEngine {
 
 	class DLLExport BaseGame {

@@ -6,8 +6,13 @@ using namespace std;
 
 namespace MyEngine {
 
+    int Window::windowWidth = 0;
+    int Window::windowHeight = 0;
+
     Window::Window(int width, int height, const char* title)
     {
+        windowWidth = width;
+        windowHeight = height;
         window = glfwCreateWindow(width, height, title, nullptr, nullptr);
         Renderer::set2DProjectionMatrix(static_cast<float>(width), static_cast<float>(height));
     }
@@ -39,17 +44,13 @@ namespace MyEngine {
         return window;
     }
 
-    int Window::getWindowWidth() const 
+    int Window::getWindowWidth() 
     {
-        int windowWidth;
-        glfwGetWindowSize(window, &windowWidth, nullptr);
         return windowWidth;
     }
 
-    int Window::getWindowHeight() const 
+    int Window::getWindowHeight() 
     {
-        int windowHeight;
-        glfwGetWindowSize(window, nullptr, &windowHeight);
         return windowHeight;
     }
 }

@@ -8,13 +8,14 @@ using namespace std;
 
 class Pong : public BaseGame {
 private:
+	Rectangle* rectangle;
+	Rectangle* rectangle2;
     void init() override;
     void update() override;
     void uninit() override;
     void draw();
-    glm::mat4 trans;
-    float x;
-    float y;
+
+	int direction;
 
 public:
 	Pong();
@@ -22,7 +23,9 @@ public:
 };
 
 Pong::Pong() {
-
+	rectangle = new Rectangle(/*Position*/ {-.5, .5, 0}, /*Size/Scale*/ {100, 100, 0}, /*Color*/ {255.0f, 128.0f, 0.0f});
+	rectangle2 = new Rectangle(/*Position*/{ .5, -.5, 0 }, /*Size/Scale*/{ 80, 80, 0 }, /*Color*/{ 170.0f, 0.0f, 255.0f });
+	direction = 1;
 }
 
 Pong::~Pong() {
@@ -31,37 +34,29 @@ Pong::~Pong() {
 
 void Pong::init()
 {
-    //scale and rotation test
-    trans = glm::mat4(1.0f);
-    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-    Renderer::setModelMatrix(trans);
 
-    trans = glm::mat4(1.0f);
-    
 }
 
 void Pong::update() {
-
+	rectangle->rotate({0, 0, 0, 1});
+	rectangle2->move({ .02f * direction, 0, 0 });
+	if (rectangle2->getTransform().position.x >= .7 || rectangle2->getTransform().position.x <= -.7) {
+		direction = -direction;
+	}
+	rectangle2->rotate({0, 0, 0, -5.0f * direction });
 	draw();
 }
 
 void Pong::uninit() {
-
+	delete rectangle;
+	delete rectangle2;
 }
 
 void Pong::draw() {
 	Renderer::clear();
 
-    Renderer::setModelMatrix(glm::mat4(1.f)); // this line is so that the Rect doesn't get rotated
-
-    Renderer::drawRect(200, 200, 200, 100, 100, 100, 100, 200, 0.5f, 0.0f, 1.0f);
-
-    trans = glm::rotate(trans, glm::radians(1.f), glm::vec3(0.0f, 0.0f, 1.0f));
-
-    Renderer::setModelMatrix(trans);
-
-    Renderer::drawTriangle(10, 80, 80, 10, 80, 80, 1.0f, 0.5f, 0.0f);
+	rectangle->draw();
+	rectangle2->draw();
 }
 
 int main() {
