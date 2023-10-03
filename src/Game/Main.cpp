@@ -23,7 +23,9 @@ public:
 };
 
 Pong::Pong() {
-	rectangle = new Rectangle(/*Position*/ { 100, 100, 0 }, /*Size/Scale*/ {100, 100, 0}, /*Color*/ {255.0f, 128.0f, 0.0f});
+	rectangle = new Rectangle(/*Position*/ { 100, 100, 0 }, 
+							  /*Size/Scale*/ {100, 100, 0}, 
+							  /*Color*/ {255.0f, 128.0f, 0.0f});
 	rectangle2 = new Rectangle(/*Position*/ { Window::getWindowWidth() * .5f, Window::getWindowHeight() * .7f, 0 }, 
 							   /*Size/Scale*/ { 80, 80, 0 }, 
 							   /*Color*/ { 170.0f, 0.0f, 255.0f });

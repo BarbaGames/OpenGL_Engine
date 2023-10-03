@@ -27,7 +27,6 @@ namespace MyEngine {
 		vertex.push_back({ 0, 0, 0 });
 		vertex.push_back({ 0, 1, 0 });
 		alignVertex();
-		cout << "Vertices are set.\n";
 	}
 
 	void Rectangle::draw() {
