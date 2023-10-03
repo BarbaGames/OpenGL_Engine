@@ -22,6 +22,21 @@ namespace MyEngine {
 		return transform.position;
 	}
 
+	Vector3 Entity::getScale() const
+	{
+		return transform.scale;
+	}
+
+	Vector3 Entity::getRotationEuler() const
+	{
+		return transform.rotation;
+	}
+
+	Quaternion Entity::getRotationQuat() const
+	{
+		return transform.rotationQuat;
+	}
+
 	Vector3 Entity::upward() const
 	{
 		return transform.upward;
@@ -30,6 +45,11 @@ namespace MyEngine {
 	Vector3 Entity::forward() const
 	{
 		return transform.forward;
+	}
+
+	Vector3 Entity::right() const
+	{
+		return transform.right;
 	}
 
 	void Entity::updateTransform()
