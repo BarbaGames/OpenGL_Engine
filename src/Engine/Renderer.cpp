@@ -62,7 +62,7 @@ namespace MyEngine
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
         // mvp
-        glm::mat4 mvp = modelMatrix * viewMatrix * projMatrix;
+        glm::mat4 mvp = projMatrix * viewMatrix * modelMatrix;
         int mvpLocation = glGetUniformLocation(shaderProgram, "u_MVP");
         glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
     }

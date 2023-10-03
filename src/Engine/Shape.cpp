@@ -35,8 +35,8 @@ namespace MyEngine {
         }
 
         // Step 4: Calculate the translation values
-        float translateX = (Window::getWindowWidth() * 0.5) - centerX;
-        float translateY = (Window::getWindowHeight() * 0.5) - centerY;
+        float translateX = -centerX;
+        float translateY = -centerY;
 
         // Step 5: Update the vertex positions
         for (Vector3& vert : vertex) {
