@@ -30,6 +30,9 @@
     <ClCompile Include="..\src\Engine\Rectangle.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Engine\Maths.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Engine\Renderer.h">
@@ -54,6 +57,9 @@
       <Filter>Source Files\Entity</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Engine\Rectangle.h">
+      <Filter>Source Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Engine\Maths.h">
       <Filter>Source Files\Entity</Filter>
     </ClInclude>
   </ItemGroup>
