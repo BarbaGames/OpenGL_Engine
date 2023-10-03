@@ -56,11 +56,14 @@ namespace MyEngine
 
     void Renderer::setUpVertexAttributes() {
         // position attribute
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
         // color attribute
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
+        // uv attribute
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glEnableVertexAttribArray(2);
         // mvp
         glm::mat4 mvp = projMatrix * viewMatrix * modelMatrix;
         int mvpLocation = glGetUniformLocation(shaderProgram, "u_MVP");
@@ -173,8 +176,8 @@ namespace MyEngine
         return {ss[0].str(), ss[1].str()}; // Returns a ShaderProgramSource struct that contains the 2 shaders in its strings
     }
 
-    template <typename T, typename T2, size_t N, size_t N2>
-    void Renderer::drawShape(const T(&vertexData)[N], const T2(&indices)[N2]) {
+    template <size_t N, size_t N2>
+    void Renderer::drawShape(float(&vertexData)[N], unsigned int(&indices)[N2]) {
         unsigned int VAO = createVertexArrayObject();
         unsigned int VBO = createVertexBufferObject(vertexData);
         unsigned int EBO = createElementBufferObject(indices);
@@ -189,10 +192,10 @@ namespace MyEngine
 
     void Renderer::drawRect(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float v4x, float v4y, float r, float g, float b) {
         float vertexData[] = {
-            v1x, v1y, 0.0f, /**/ r, g, b,
-            v2x, v2y, 0.0f, /**/ r, g, b,
-            v3x, v3y, 0.0f, /**/ r, g, b,
-            v4x, v4y, 0.0f, /**/ r, g, b
+            v1x, v1y, 0.0f, /**/ r, g, b, 0.0f, 0.0f,
+            v2x, v2y, 0.0f, /**/ r, g, b, 0.0f, 0.0f,
+            v3x, v3y, 0.0f, /**/ r, g, b, 0.0f, 0.0f,
+            v4x, v4y, 0.0f, /**/ r, g, b, 0.0f, 0.0f
         };
         unsigned int indices[] = {
             0, 1, 3,  // First Triangle
@@ -204,9 +207,9 @@ namespace MyEngine
 
     void Renderer::drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float r, float g, float b) {
         float vertexData[] = {
-            v1x, v1y, 0.0f, /**/ r, g, b,
-            v2x, v2y, 0.0f, /**/ r, g, b,
-            v3x, v3y, 0.0f, /**/ r, g, b
+            v1x, v1y, 0.0f, /**/ r, g, b, 0.0f, 0.0f,
+            v2x, v2y, 0.0f, /**/ r, g, b, 0.0f, 0.0f,
+            v3x, v3y, 0.0f, /**/ r, g, b, 0.0f, 0.0f
         };
         unsigned int indices[] = {
             0, 1, 2
