@@ -3,7 +3,7 @@
 namespace MyEngine {
 
 	Shape::Shape(Vector3 position, Vector3 scale, Color color) :
-		Entity({ position, scale, {0, 0, 0, 0}, color }) {
+		Entity({ position, scale, {0,0,0}, {0, 0, 0, 0}, {1,0,0}, {0,1,0}, {0,0,1}, color }) {
 		
 	}
 

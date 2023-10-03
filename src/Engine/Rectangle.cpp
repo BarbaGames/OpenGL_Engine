@@ -7,7 +7,7 @@ using namespace std;
 namespace MyEngine {
 
 	Rectangle::Rectangle(Vector3 position, Vector3 scale, Color color) :
-		Shape({ position, scale, { 0, 0.0f, 0.0f, 0.0f }, color }) {
+		Shape({ position, scale, {0,0,0}, {0, 0, 0, 0}, {1,0,0}, {0,1,0}, {0,0,1}, color }) {
 		setVertex();
 	}
 
@@ -22,10 +22,10 @@ namespace MyEngine {
 
 	void Rectangle::setVertex() {
 		transform.color.normalize();
-		vertex.push_back({ 1, 1 });
-		vertex.push_back({ 1, 0 });
-		vertex.push_back({ 0, 0 });
-		vertex.push_back({ 0, 1 });
+		vertex.push_back({ 1, 1, 0 });
+		vertex.push_back({ 1, 0, 0 });
+		vertex.push_back({ 0, 0, 0 });
+		vertex.push_back({ 0, 1, 0 });
 		alignVertex();
 		cout << "Vertices are set.\n";
 	}
@@ -47,10 +47,10 @@ namespace MyEngine {
 		if (transform.scale.x != 0 || transform.scale.y != 0 || transform.scale.z != 0)
 			modelMatrix = glm::scale(modelMatrix, glm::vec3(transform.scale.x, transform.scale.y, 0.0f));
 
-		if (transform.rotation.x != 0 || transform.rotation.y != 0 || transform.rotation.z != 0) {
-			modelMatrix = glm::rotate(modelMatrix, glm::radians(transform.rotation.x), glm::vec3(1.0, 0.0f, 0.0f));
-			modelMatrix = glm::rotate(modelMatrix, glm::radians(transform.rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-			modelMatrix = glm::rotate(modelMatrix, glm::radians(transform.rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+		if (transform.rotationQuat.x != 0 || transform.rotationQuat.y != 0 || transform.rotationQuat.z != 0) {
+			modelMatrix = glm::rotate(modelMatrix, glm::radians(transform.rotationQuat.x), glm::vec3(1.0, 0.0f, 0.0f));
+			modelMatrix = glm::rotate(modelMatrix, glm::radians(transform.rotationQuat.y), glm::vec3(0.0f, 1.0f, 0.0f));
+			modelMatrix = glm::rotate(modelMatrix, glm::radians(transform.rotationQuat.z), glm::vec3(0.0f, 0.0f, 1.0f));
 		}
 
 		Renderer::setModelMatrix(modelMatrix);

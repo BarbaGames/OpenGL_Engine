@@ -14,10 +14,23 @@ namespace MyEngine {
 
 		Transform getTransform();
 
+		Vector3 getPosition() const;
+		Vector3 getScale() const;
+		Vector3 getRotationEuler() const;
+		
+		Quaternion getRotationQuat() const;
+
+		Vector3 upward() const;
+		Vector3 forward() const;
+		Vector3 right() const;
+
+		void updateTransform();
+		
 		void setTransform(Transform transform);
 		void setPosition(Vector3 position);
 		void setScale(Vector3 scale);
-		void setRotation(Quaternion rotation);
+		void setRotationQuat(Quaternion rotation);
+		void setRotationEuler(Vector3 rotation);
 		void setColor(Color color);
 
 		// --

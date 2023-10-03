@@ -8,6 +8,24 @@ namespace MyEngine {
 		float x; // width | pitch
 		float y; // height | yaw
 		float z; // depth | roll
+		
+		Vector3 operator*(float scalar) const {
+			return {x * scalar, y * scalar, z * scalar};
+		}
+
+		Vector3(float iX, float iY, float iZ)
+		{
+			x = iX;
+			y = iY;
+			z = iZ;
+		}
+
+		Vector3()
+		{
+			x = 0;
+			y = 0;
+			z = 0;
+		}
 	};
 
 	struct DLLExport Quaternion {
@@ -34,14 +52,30 @@ namespace MyEngine {
 				g = g / 255.0f;
 				b = b / 255.0f;
 			}
-			cout << r << ", " << g << ", " << b << "\n";
 		}
 	};
 
 	struct DLLExport Transform {
 		Vector3 position;
 		Vector3 scale;
-		Quaternion rotation;
+		Vector3 rotation;
+		
+		Quaternion rotationQuat;
+		
+		Vector3 forward;
+		Vector3 upward;
+		Vector3 right;
+		
 		Color color;
+	};
+	
+	struct DLLExport ModelMatrix {
+            
+		glm::mat4 model;
+		glm::mat4 translate;
+		glm::mat4 rotationX;
+		glm::mat4 rotationY;
+		glm::mat4 rotationZ;
+		glm::mat4 scale;
 	};
 }

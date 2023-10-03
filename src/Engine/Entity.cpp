@@ -1,7 +1,7 @@
 #include "Entity.h"
 
 #include <iostream>
-
+#include "Maths.h"
 using namespace std;
 
 namespace MyEngine {
@@ -17,6 +17,29 @@ namespace MyEngine {
 		return transform;
 	}
 
+	Vector3 Entity::getPosition() const
+	{
+		return transform.position;
+	}
+
+	Vector3 Entity::upward() const
+	{
+		return transform.upward;
+	}
+
+	Vector3 Entity::forward() const
+	{
+		return transform.forward;
+	}
+
+	void Entity::updateTransform()
+	{
+		transform.rotationQuat = Maths::Euler(transform.rotation);
+		transform.forward = Maths::Quat2Vec3(transform.rotationQuat, Vector3(0, 0, 1));
+		transform.upward = Maths::Quat2Vec3(transform.rotationQuat, Vector3(0, 1, 0));
+		transform.right = Maths::Quat2Vec3(transform.rotationQuat, Vector3(1, 0, 0));
+	}
+
 	void Entity::setTransform(Transform transform) {
 		this->transform = transform;
 	}
@@ -29,7 +52,12 @@ namespace MyEngine {
 		transform.scale = scale;
 	}
 
-	void Entity::setRotation(Quaternion rotation) {
+	void Entity::setRotationQuat(Quaternion rotation) {
+		transform.rotationQuat = rotation;
+	}
+
+	void Entity::setRotationEuler(Vector3 rotation)
+	{
 		transform.rotation = rotation;
 	}
 
@@ -44,8 +72,8 @@ namespace MyEngine {
 	}
 
 	void Entity::rotate(Quaternion rotation) {
-		transform.rotation.x += rotation.x;
-		transform.rotation.y += rotation.y;
-		transform.rotation.z += rotation.z;
+		transform.rotationQuat.x += rotation.x;
+		transform.rotationQuat.y += rotation.y;
+		transform.rotationQuat.z += rotation.z;
 	}
 }
