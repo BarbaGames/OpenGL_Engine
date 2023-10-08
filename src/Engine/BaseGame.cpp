@@ -4,10 +4,12 @@ namespace MyEngine {
 	BaseGame::BaseGame() {
 		engine = new Engine();
 		window = new Window(640, 480, "Base Game");
+		input = new Input(window->getWindow());
 	}
 
 	BaseGame::~BaseGame() {
 		uninitBase();
+		delete input;
 		delete window;
 		delete engine;
 	}

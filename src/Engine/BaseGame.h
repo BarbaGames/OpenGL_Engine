@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine.h"
+#include "Input.h"
 
 #include "Rectangle.h"
 
@@ -14,7 +15,8 @@ namespace MyEngine {
 		void uninitBase();
 	protected:
 		Window* window;
-
+		Input* input;
+		
 		virtual void init() {};
 		virtual void update() {};
 		virtual void uninit() {};

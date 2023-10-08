@@ -42,13 +42,15 @@ void Pong::init()
 }
 
 void Pong::update() {
-	rectangle->rotate({0, 0, 0, 1});
+	// When key 87 (W) is pressed, the rotation is to the other side. 
+	rectangle->rotate({0, 0, 0, input->getKeyDown(87) ? 1.f : -1.f});
 	rectangle2->move({ 2.0f * direction, 0, 0 });
 	if (rectangle2->getTransform().position.x >= Window::getWindowWidth() * .8f || 
 		rectangle2->getTransform().position.x <= Window::getWindowWidth() * .2f) {
 		direction = -direction;
 	}
 	rectangle2->rotate({0, 0, 0, 1.5f * direction });
+	
 	draw();
 }
 

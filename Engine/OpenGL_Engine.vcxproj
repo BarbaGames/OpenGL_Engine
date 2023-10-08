@@ -22,6 +22,7 @@
     <ClCompile Include="..\src\Engine\BaseGame.cpp" />
     <ClCompile Include="..\src\Engine\Engine.cpp" />
     <ClCompile Include="..\src\Engine\Entity.cpp" />
+    <ClCompile Include="..\src\Engine\Input.cpp" />
     <ClCompile Include="..\src\Engine\Maths.cpp" />
     <ClCompile Include="..\src\Engine\Rectangle.cpp" />
     <ClCompile Include="..\src\Engine\Renderer.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="..\src\Engine\BaseGame.h" />
     <ClInclude Include="..\src\Engine\Engine.h" />
     <ClInclude Include="..\src\Engine\Entity.h" />
+    <ClInclude Include="..\src\Engine\Input.h" />
     <ClInclude Include="..\src\Engine\Maths.h" />
     <ClInclude Include="..\src\Engine\Rectangle.h" />
     <ClInclude Include="..\src\Engine\Renderer.h" />

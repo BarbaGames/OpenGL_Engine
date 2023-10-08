@@ -1,6 +1,5 @@
 ﻿#include "Maths.h"
 
-#include <glm.hpp>
 #include <cmath>
 
 
