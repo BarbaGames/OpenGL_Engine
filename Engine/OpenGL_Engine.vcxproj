@@ -27,6 +27,7 @@
     <ClCompile Include="..\src\Engine\Rectangle.cpp" />
     <ClCompile Include="..\src\Engine\Renderer.cpp" />
     <ClCompile Include="..\src\Engine\Shape.cpp" />
+    <ClCompile Include="..\src\Engine\Texture.cpp" />
     <ClCompile Include="..\src\Engine\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +39,8 @@
     <ClInclude Include="..\src\Engine\Rectangle.h" />
     <ClInclude Include="..\src\Engine\Renderer.h" />
     <ClInclude Include="..\src\Engine\Shape.h" />
+    <ClInclude Include="..\src\Engine\stb_image.h" />
+    <ClInclude Include="..\src\Engine\Texture.h" />
     <ClInclude Include="..\src\Engine\Transform.h" />
     <ClInclude Include="..\src\Engine\Window.h" />
   </ItemGroup>
