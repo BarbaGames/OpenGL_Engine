@@ -44,6 +44,10 @@
     <ClInclude Include="..\src\Engine\Transform.h" />
     <ClInclude Include="..\src\Engine\Window.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Game\res\Shaders\Basic.shader" />
+    <Content Include="..\Game\res\Shaders\Texture.shader" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

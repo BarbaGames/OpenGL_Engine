@@ -193,9 +193,9 @@ namespace MyEngine
     void Renderer::drawRect(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float v4x, float v4y, float r, float g, float b) {
         float vertexData[] = {
             v1x, v1y, 0.0f, /**/ r, g, b, 0.0f, 0.0f,
-            v2x, v2y, 0.0f, /**/ r, g, b, 0.0f, 0.0f,
-            v3x, v3y, 0.0f, /**/ r, g, b, 0.0f, 0.0f,
-            v4x, v4y, 0.0f, /**/ r, g, b, 0.0f, 0.0f
+            v2x, v2y, 0.0f, /**/ r, g, b, 1.0f, 0.0f,
+            v3x, v3y, 0.0f, /**/ r, g, b, 0.0f, 1.0f,
+            v4x, v4y, 0.0f, /**/ r, g, b, 1.0f, 1.0f
         };
         unsigned int indices[] = {
             0, 1, 3,  // First Triangle
@@ -224,6 +224,11 @@ namespace MyEngine
             glVertex2f(v2x, v2y);
             glVertex2f(v3x, v3y);
         glEnd();
+    }
+
+    void Renderer::bindTexture(unsigned int textureID) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureID);
     }
 
     void Renderer::set2DProjectionMatrix(float width, float height) {

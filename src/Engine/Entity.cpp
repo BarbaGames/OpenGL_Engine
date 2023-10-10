@@ -11,49 +11,53 @@ namespace MyEngine {
 	}
 
 	Entity::~Entity() {
+		if(textureLoaded) {
+			delete texture;
+		}
 	}
 
-	Transform Entity::getTransform() {
+	void Entity::LoadTexture(std::string path) {
+		if(!texture) {
+			texture = new Texture();
+		}
+		if(texture) {
+			textureLoaded = texture->LoadTexture(path);
+		}
+	}
+
+	Transform Entity::getTransform() const {
 		return transform;
 	}
 
-	Vector3 Entity::getPosition() const
-	{
+	Vector3 Entity::getPosition() const	{
 		return transform.position;
 	}
 
-	Vector3 Entity::getScale() const
-	{
+	Vector3 Entity::getScale() const {
 		return transform.scale;
 	}
 
-	Vector3 Entity::getRotationEuler() const
-	{
+	Vector3 Entity::getRotationEuler() const {
 		return transform.rotation;
 	}
 
-	Quaternion Entity::getRotationQuat() const
-	{
+	Quaternion Entity::getRotationQuat() const {
 		return transform.rotationQuat;
 	}
 
-	Vector3 Entity::upward() const
-	{
+	Vector3 Entity::upward() const {
 		return transform.upward;
 	}
 
-	Vector3 Entity::forward() const
-	{
+	Vector3 Entity::forward() const {
 		return transform.forward;
 	}
 
-	Vector3 Entity::right() const
-	{
+	Vector3 Entity::right() const {
 		return transform.right;
 	}
 
-	void Entity::updateTransform()
-	{
+	void Entity::updateTransform() {
 		transform.rotationQuat = Maths::Euler(transform.rotation);
 		transform.forward = Maths::Quat2Vec3(transform.rotationQuat, Vector3(0, 0, 1));
 		transform.upward = Maths::Quat2Vec3(transform.rotationQuat, Vector3(0, 1, 0));
@@ -76,8 +80,7 @@ namespace MyEngine {
 		transform.rotationQuat = rotation;
 	}
 
-	void Entity::setRotationEuler(Vector3 rotation)
-	{
+	void Entity::setRotationEuler(Vector3 rotation)	{
 		transform.rotation = rotation;
 	}
 

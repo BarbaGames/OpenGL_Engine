@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Texture.h"
 #include "Transform.h"
 
 namespace MyEngine {
@@ -7,12 +8,15 @@ namespace MyEngine {
 	class DLLExport Entity {
 	protected:
 		Transform transform;
-
+		Texture* texture;
+		bool textureLoaded;
 	public:
 		Entity(Transform transform);
 		virtual ~Entity();
 
-		Transform getTransform();
+		void LoadTexture(std::string path);
+		
+		Transform getTransform() const;
 
 		Vector3 getPosition() const;
 		Vector3 getScale() const;
