@@ -190,6 +190,21 @@ namespace MyEngine
         glDeleteVertexArrays(1, &VAO);
     }
 
+    template <size_t N, size_t N2>
+    void Renderer::drawTexture(float(&vertexData)[N], unsigned int(&indices)[N2], unsigned int textureID) {
+        unsigned int VAO = createVertexArrayObject();
+        unsigned int VBO = createVertexBufferObject(vertexData);
+        unsigned int EBO = createElementBufferObject(indices);
+
+        setUpVertexAttributes();
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDeleteBuffers(1, &EBO);
+        glDeleteBuffers(1, &VBO);
+        glDeleteVertexArrays(1, &VAO);
+    }
+
     void Renderer::drawRect(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float v4x, float v4y, float r, float g, float b) {
         float vertexData[] = {
             v1x, v1y, 0.0f, /**/ r, g, b, 0.0f, 0.0f,
