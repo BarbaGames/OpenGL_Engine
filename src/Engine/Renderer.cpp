@@ -205,6 +205,21 @@ namespace MyEngine
         glDeleteVertexArrays(1, &VAO);
     }
 
+    void drawTextureDefault() {
+        float vertexData[] = {
+            0.0f, 0.0f, 0.0f, /**/ 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, /**/ 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, /**/ 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 0.0f, /**/ 0.0f, 0.0f, 0.0f, 1.0f, 1.0f
+        };
+        unsigned int indices[] = {
+            0, 1, 3,  // First Triangle
+            1, 2, 3   // Second Triangle
+        };
+
+        Renderer::drawTexture(vertexData, indices, 0);
+    }
+
     void Renderer::drawRect(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float v4x, float v4y, float r, float g, float b) {
         float vertexData[] = {
             v1x, v1y, 0.0f, /**/ r, g, b, 0.0f, 0.0f,

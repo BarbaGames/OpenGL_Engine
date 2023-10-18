@@ -45,6 +45,8 @@ namespace MyEngine {
         static void bindTexture(unsigned int textureID);
         template <size_t N, size_t N2>
         static void drawShape(float(&vertexData)[N], unsigned int(&indices)[N2]);
+        template <size_t N, size_t N2>
+        static void drawTexture(float(&vertexData)[N], unsigned int(&indices)[N2], unsigned int textureID);
         static void drawRect(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float v4x, float v4y, float r, float g, float b);
         // Draws a triangle using modern OpenGL with normalized positions
         static void drawTriangle(float v1x, float v1y, float v2x, float v2y, float v3x, float v3y, float r, float g, float b);

@@ -3,6 +3,7 @@
 #include "Input.h"
 
 #include "Rectangle.h"
+#include "Sprite.h"
 
 namespace MyEngine {
 

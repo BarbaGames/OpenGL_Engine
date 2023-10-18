@@ -39,7 +39,6 @@ Pong::~Pong() {
 
 void Pong::init()
 {
-	rectangle->LoadTexture("texture_wrapping.png");
 
 }
 
