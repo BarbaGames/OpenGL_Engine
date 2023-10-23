@@ -4,9 +4,10 @@
 
 namespace MyEngine {
 
-	Sprite::Sprite(string path, Vector3 position, Vector3 scale, Color color) :
+	Sprite::Sprite(Vector3 position, Vector3 scale, Color color) :
 		Shape({ position, scale, {0,0,0}, {0, 0, 0, 0}, {1,0,0}, {0,1,0}, {0,0,1}, color }) {
-		textureID = AssetLoader::loadImage(path);
+		textureID = 0;
+
 		setVertex();
 	}
 
@@ -21,6 +22,10 @@ namespace MyEngine {
 		vertex.push_back({ 0, 0, 0 });
 		vertex.push_back({ 0, 1, 0 });
 		alignVertex();
+	}
+
+	void Sprite::setImage(unsigned int textureID) {
+		this->textureID = textureID;
 	}
 
 	void Sprite::draw() {
@@ -46,6 +51,18 @@ namespace MyEngine {
 			modelMatrix = glm::rotate(modelMatrix, glm::radians(transform.rotationQuat.z), glm::vec3(0.0f, 0.0f, 1.0f));
 		}
 
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glEnable(GL_TEXTURE_2D);
+		glActiveTexture(GL_TEXTURE0);
+
+		Renderer::setModelMatrix(modelMatrix);
 		Renderer::drawTexture(vertexData, indices, textureID);
+
+		glDisable(GL_BLEND);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glDisable(GL_TEXTURE_2D);
 	}
 }

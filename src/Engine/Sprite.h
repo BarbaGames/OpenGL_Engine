@@ -9,8 +9,10 @@ namespace MyEngine {
 		unsigned int textureID;
 		void setVertex();
 	public:
-		Sprite(string path, Vector3 position, Vector3 scale, Color color);
+		Sprite(Vector3 position, Vector3 scale, Color color);
 		virtual ~Sprite() override;
+
+		void setImage(unsigned int textureID);
 
 		void draw() override;
 	};

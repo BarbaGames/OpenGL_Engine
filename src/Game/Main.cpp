@@ -10,6 +10,7 @@ class Pong : public BaseGame {
 private:
 	Rectangle* rectangle;
 	Rectangle* rectangle2;
+	Sprite* sprite;
     void init() override;
     void update() override;
     void uninit() override;
@@ -30,6 +31,10 @@ Pong::Pong() {
 							   /*Size/Scale*/ { 80, 80, 0 }, 
 							   /*Color*/ { 170.0f, 0.0f, 255.0f });
 
+	sprite = new Sprite(/*Position*/{ 1, 1, 0 },
+						/*Size/Scale*/{ 100, 100, 0 },
+						/*Color*/{ 255.0f, 255.0f, 255.0f });
+
 	direction = 1;
 }
 
@@ -39,7 +44,9 @@ Pong::~Pong() {
 
 void Pong::init()
 {
-
+	unsigned int textureID = AssetLoader::loadImage("texture_wrapping.png");
+	sprite->setImage(textureID);
+	cout << textureID << "\n";
 }
 
 void Pong::update() {
@@ -58,13 +65,15 @@ void Pong::update() {
 void Pong::uninit() {
 	delete rectangle;
 	delete rectangle2;
+	delete sprite;
 }
 
 void Pong::draw() {
 	Renderer::clear();
 
-	rectangle->draw();
-	rectangle2->draw();
+	//rectangle->draw();
+	//rectangle2->draw();
+	sprite->draw();
 }
 
 int main() {

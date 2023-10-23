@@ -8,8 +8,10 @@ using namespace std;
 namespace MyEngine {
 
 	class DLLExport AssetLoader {
-	public:
+	private:
+		static bool fileExists(const std::string& filePath);
 
+	public:
 
 		static unsigned int loadImage(string path);
 		static void unloadImage(unsigned int id);

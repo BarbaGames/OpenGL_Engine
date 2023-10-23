@@ -8,7 +8,8 @@
 namespace MyEngine
 {
 // -- Private --
-    unsigned int Renderer::shaderProgram = 0;
+    unsigned int Renderer::shapeShaderProgram = 0;
+    unsigned int Renderer::textureShaderProgram = 0;
     glm::mat4 Renderer::projMatrix = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
     glm::mat4 Renderer::viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     glm::mat4 Renderer::modelMatrix = glm::mat4(1.0f);
@@ -54,7 +55,7 @@ namespace MyEngine
         return program;
     }
 
-    void Renderer::setUpVertexAttributes() {
+    void Renderer::setUpVertexAttributesShape() {
         // position attribute
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
@@ -66,7 +67,23 @@ namespace MyEngine
         glEnableVertexAttribArray(2);
         // mvp
         glm::mat4 mvp = projMatrix * viewMatrix * modelMatrix;
-        int mvpLocation = glGetUniformLocation(shaderProgram, "u_MVP");
+        int mvpLocation = glGetUniformLocation(shapeShaderProgram, "u_MVP");
+        glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
+    }
+
+    void Renderer::setUpVertexAttributesTexture() {
+        // position attribute
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+        // color attribute
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
+        // uv attribute
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glEnableVertexAttribArray(2);
+        // mvp
+        glm::mat4 mvp = projMatrix * viewMatrix * modelMatrix;
+        int mvpLocation = glGetUniformLocation(textureShaderProgram, "u_MVP");
         glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
     }
 
@@ -97,17 +114,20 @@ namespace MyEngine
 
 // -- Public --
 
-    void Renderer::loadBasicShader() { // This is a test function that creates a simple hardcoded shader program and applies it
+    void Renderer::loadBasicShaders() { // This is a test function that creates a simple hardcoded shader program and applies it
 
-        ShaderProgramSource source = parseShader("res/Shaders/Basic.shader");
+        ShaderProgramSource sourceShape = parseShader("res/Shaders/Basic.shader");
+        ShaderProgramSource sourceTexture = parseShader("res/Shaders/Texture.shader");
         
-        shaderProgram = createShader(source.VertexSource, source.FragmentSource);
+        shapeShaderProgram = createShader(sourceShape.VertexSource, sourceShape.FragmentSource);
+        textureShaderProgram = createShader(sourceTexture.VertexSource, sourceTexture.FragmentSource);
 
-        glUseProgram(shaderProgram);
+        setShaderProgram(shapeShaderProgram);
     }
 
-    void Renderer::unloadBasicShader() {
-        glDeleteProgram(shaderProgram);
+    void Renderer::unloadBasicShaders() {
+        glDeleteProgram(shapeShaderProgram);
+        glDeleteProgram(textureShaderProgram);
     }
 
     void Renderer::swapBuffers(GLFWwindow* window) {
@@ -178,11 +198,12 @@ namespace MyEngine
 
     template <size_t N, size_t N2>
     void Renderer::drawShape(float(&vertexData)[N], unsigned int(&indices)[N2]) {
+        setShaderProgram(shapeShaderProgram);
         unsigned int VAO = createVertexArrayObject();
         unsigned int VBO = createVertexBufferObject(vertexData);
         unsigned int EBO = createElementBufferObject(indices);
 
-        setUpVertexAttributes();
+        setUpVertexAttributesShape();
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, N2, GL_UNSIGNED_INT, 0);
         glDeleteBuffers(1, &EBO);
@@ -192,11 +213,12 @@ namespace MyEngine
 
     template <size_t N, size_t N2>
     void Renderer::drawTexture(float(&vertexData)[N], unsigned int(&indices)[N2], unsigned int textureID) {
+        setShaderProgram(textureShaderProgram);
         unsigned int VAO = createVertexArrayObject();
         unsigned int VBO = createVertexBufferObject(vertexData);
         unsigned int EBO = createElementBufferObject(indices);
 
-        setUpVertexAttributes();
+        setUpVertexAttributesTexture();
         glBindTexture(GL_TEXTURE_2D, textureID);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -277,6 +299,10 @@ namespace MyEngine
     void Renderer::setModelMatrix(glm::mat4 newModelMatrix)
     {
         modelMatrix = newModelMatrix;
+    }
+
+    void Renderer::setShaderProgram(unsigned int shaderProgram) {
+        glUseProgram(shaderProgram);
     }
 
     double Renderer::getFrameTime() {
