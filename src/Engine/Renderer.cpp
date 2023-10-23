@@ -278,11 +278,6 @@ namespace MyEngine
         glEnd();
     }
 
-    void Renderer::bindTexture(unsigned int textureID) {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureID);
-    }
-
     void Renderer::set2DProjectionMatrix(float width, float height) {
         projMatrix = glm::ortho(0.0f, width, height, 0.0f, -1.0f, 1.0f);
     }

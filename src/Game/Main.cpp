@@ -31,9 +31,9 @@ Pong::Pong() {
 							   /*Size/Scale*/ { 80, 80, 0 }, 
 							   /*Color*/ { 170.0f, 0.0f, 255.0f });
 
-	sprite = new Sprite(/*Position*/{ 1, 1, 0 },
-						/*Size/Scale*/{ 100, 100, 0 },
-						/*Color*/{ 255.0f, 255.0f, 255.0f });
+	sprite = new Sprite(/*Position*/{ 100, 100, 0 },
+						/*Size/Scale*/{ 50, 50, 0 },
+						/*Color*/{ 255.0f, 255.0f, 255.0f});
 
 	direction = 1;
 }
@@ -44,9 +44,8 @@ Pong::~Pong() {
 
 void Pong::init()
 {
-	unsigned int textureID = AssetLoader::loadImage("texture_wrapping.png");
+	unsigned int textureID = AssetLoader::loadImage("spaceship.png");
 	sprite->setImage(textureID);
-	cout << textureID << "\n";
 }
 
 void Pong::update() {
@@ -57,7 +56,8 @@ void Pong::update() {
 		rectangle2->getTransform().position.x <= Window::getWindowWidth() * .2f) {
 		direction = -direction;
 	}
-	rectangle2->rotate({0, 0, 0, 1.5f * direction });
+	rectangle2->rotate({0, 0, 0, 1.5f * direction});
+	sprite->rotate({0, 0, 0, 1.5f});
 	
 	draw();
 }

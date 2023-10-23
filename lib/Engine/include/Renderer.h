@@ -43,7 +43,6 @@ namespace MyEngine {
         // Reads a file containing shaders and returns them
         static ShaderProgramSource parseShader(const string& filepath);
         // -- Draw functions --
-        static void bindTexture(unsigned int textureID);
         template <size_t N, size_t N2>
         static void drawShape(float(&vertexData)[N], unsigned int(&indices)[N2]);
         template <size_t N, size_t N2>

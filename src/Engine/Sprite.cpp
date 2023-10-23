@@ -30,10 +30,10 @@ namespace MyEngine {
 
 	void Sprite::draw() {
 		float vertexData[] = {
-			vertex[0].x, vertex[0].y, vertex[0].z, /**/ transform.color.r, transform.color.g, transform.color.b, 0.0f, 0.0f,
-			vertex[1].x, vertex[1].y, vertex[1].z, /**/ transform.color.r, transform.color.g, transform.color.b, 0.0f, 0.0f,
+			vertex[0].x, vertex[0].y, vertex[0].z, /**/ transform.color.r, transform.color.g, transform.color.b, 1.0f, 1.0f,
+			vertex[1].x, vertex[1].y, vertex[1].z, /**/ transform.color.r, transform.color.g, transform.color.b, 1.0f, 0.0f,
 			vertex[2].x, vertex[2].y, vertex[2].z, /**/ transform.color.r, transform.color.g, transform.color.b, 0.0f, 0.0f,
-			vertex[3].x, vertex[3].y, vertex[3].z, /**/ transform.color.r, transform.color.g, transform.color.b, 0.0f, 0.0f
+			vertex[3].x, vertex[3].y, vertex[3].z, /**/ transform.color.r, transform.color.g, transform.color.b, 0.0f, 1.0f
 		};
 		unsigned int indices[] = {
 			0, 1, 3,  // First Triangle
