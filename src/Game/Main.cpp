@@ -11,6 +11,7 @@ private:
 	Rectangle* rectangle;
 	Rectangle* rectangle2;
 	Sprite* sprite;
+	Sprite* sprite2;
     void init() override;
     void update() override;
     void uninit() override;
@@ -32,8 +33,12 @@ Pong::Pong() {
 							   /*Color*/ { 170.0f, 0.0f, 255.0f });
 
 	sprite = new Sprite(/*Position*/{ 500, 100, 0 },
-						/*Size/Scale*/{ 50, 50, 0 },
+						/*Size/Scale*/ { 50, 50, 0 },
 						/*Color*/{ 255.0f, 255.0f, 255.0f});
+
+	sprite2 = new Sprite(/*Position*/ { Window::getWindowWidth() * .5f, Window::getWindowHeight() * .7f, 0 },
+						/*Size/Scale*/ { 35, 35, 0 },
+						/*Color*/{ 255.0f, 255.0f, 255.0f });
 
 	direction = 1;
 }
@@ -46,6 +51,8 @@ void Pong::init()
 {
 	unsigned int textureID = AssetLoader::loadImage("spaceship.png");
 	sprite->setImage(textureID);
+	unsigned int textureID2 = AssetLoader::loadImage("sus.png");
+	sprite2->setImage(textureID2);
 }
 
 void Pong::update() {
@@ -58,7 +65,8 @@ void Pong::update() {
 	}
 	rectangle2->rotate({0, 0, 0, 1.5f * direction});
 	sprite->rotate({0, 0, 0, 1.5f});
-	
+	sprite2->rotate({ 0, 0, 0, -10.0f });
+
 	cout << "Frame Time: " << ETime::getDeltaTime() << "\n";
 
 	draw();
@@ -76,6 +84,7 @@ void Pong::draw() {
 	rectangle->draw();
 	rectangle2->draw();
 	sprite->draw();
+	sprite2->draw();
 }
 
 int main() {
