@@ -37,8 +37,8 @@ Pong::Pong() {
 						/*Color*/{ 255.0f, 255.0f, 255.0f});
 
 	sprite2 = new Sprite(/*Position*/ { Window::getWindowWidth() * .5f, Window::getWindowHeight() * .7f, 0 },
-						/*Size/Scale*/ { 35, 35, 0 },
-						/*Color*/{ 255.0f, 255.0f, 255.0f });
+						 /*Size/Scale*/ { 35, 35, 0 },
+						 /*Color*/{ 255.0f, 255.0f, 255.0f });
 
 	direction = 1;
 }
@@ -65,9 +65,13 @@ void Pong::update() {
 	}
 	rectangle2->rotate({0, 0, 0, 1.5f * direction});
 	sprite->rotate({0, 0, 0, 1.5f});
-	sprite2->rotate({ 0, 0, 0, -10.0f });
-
-	cout << "Frame Time: " << ETime::getDeltaTime() << "\n";
+	sprite2->rotate({ 0, 0, 0, -0.1f });
+	if (direction > 0) {
+		sprite2->setMirrorX(false);
+	}
+	else {
+		sprite2->setMirrorX(true);
+	}
 
 	draw();
 }

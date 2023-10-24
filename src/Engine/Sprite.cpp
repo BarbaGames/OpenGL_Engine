@@ -7,6 +7,8 @@ namespace MyEngine {
 	Sprite::Sprite(Vector3 position, Vector3 scale, Color color) :
 		Shape({ position, scale, {0,0,0}, {0, 0, 0, 0}, {1,0,0}, {0,1,0}, {0,0,1}, color }) {
 		textureID = 0;
+		mirrorX = 1;
+		mirrorY = 1;
 
 		setVertex();
 	}
@@ -28,6 +30,14 @@ namespace MyEngine {
 		this->textureID = textureID;
 	}
 
+	void Sprite::setMirrorX(bool mirrorX) {
+		mirrorX ? this->mirrorX = -1 : this->mirrorX = 1;
+	}
+
+	void Sprite::setMirrorY(bool mirrorY) {
+		mirrorY ? this->mirrorY = -1 : this->mirrorY = 1;
+	}
+
 	void Sprite::draw() {
 		float vertexData[] = {
 			vertex[0].x, vertex[0].y, vertex[0].z, /**/ transform.color.r, transform.color.g, transform.color.b, 1.0f, 1.0f,
@@ -43,7 +53,7 @@ namespace MyEngine {
 		modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(transform.position.x, transform.position.y, transform.position.z));
 
 		if (transform.scale.x != 0 || transform.scale.y != 0 || transform.scale.z != 0)
-			modelMatrix = glm::scale(modelMatrix, glm::vec3(transform.scale.x, transform.scale.y, 0.0f));
+			modelMatrix = glm::scale(modelMatrix, glm::vec3(mirrorX * transform.scale.x, mirrorY * transform.scale.y, 0.0f));
 
 		if (transform.rotationQuat.x != 0 || transform.rotationQuat.y != 0 || transform.rotationQuat.z != 0) {
 			modelMatrix = glm::rotate(modelMatrix, glm::radians(transform.rotationQuat.x), glm::vec3(1.0, 0.0f, 0.0f));
