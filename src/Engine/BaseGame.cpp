@@ -24,7 +24,7 @@ namespace MyEngine {
 		window->makeContext(engine);
 		window->setVsyncEnabled(true);
 
-		Renderer::loadBasicShaders();
+		Shader::loadBasicShaders();
 
 		init();
 		updateBase();
@@ -47,7 +47,7 @@ namespace MyEngine {
 	void BaseGame::uninitBase() {
 		uninit();
 
-		Renderer::unloadBasicShaders();
+		Shader::unloadShaders();
 	}
 
 	// Public
