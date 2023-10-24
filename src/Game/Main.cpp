@@ -59,6 +59,8 @@ void Pong::update() {
 	rectangle2->rotate({0, 0, 0, 1.5f * direction});
 	sprite->rotate({0, 0, 0, 1.5f});
 	
+	cout << "Frame Time: " << ETime::getDeltaTime() << "\n";
+
 	draw();
 }
 

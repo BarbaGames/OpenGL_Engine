@@ -26,12 +26,7 @@ namespace MyEngine {
         static unsigned int createElementBufferObject(const T(&indices)[N]);
 
     public:
-        struct ShaderProgramSource
-        {
-            string VertexSource;
-            string FragmentSource;
-        };
-        
+     
         static void swapBuffers(GLFWwindow* window);
         static void clear();
         // -- Draw functions --
