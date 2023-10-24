@@ -1,5 +1,7 @@
 #include "BaseGame.h"
 
+#include "Shader.h"
+
 namespace MyEngine {
 	BaseGame::BaseGame() {
 		engine = new Engine();
@@ -24,7 +26,7 @@ namespace MyEngine {
 		window->makeContext(engine);
 		window->setVsyncEnabled(true);
 
-		Renderer::loadBasicShaders();
+		Shader::loadBasicShaders();
 
 		init();
 		updateBase();
@@ -34,6 +36,7 @@ namespace MyEngine {
 	void BaseGame::updateBase() {
 		while (!window->shouldClose()) // Verifies if the window closes
 		{
+			ETime::updateFrameTime();
 			update();
 
 			// Swap front and back buffers
@@ -47,7 +50,7 @@ namespace MyEngine {
 	void BaseGame::uninitBase() {
 		uninit();
 
-		Renderer::unloadBasicShaders();
+		Shader::unloadBasicShaders();
 	}
 
 	// Public

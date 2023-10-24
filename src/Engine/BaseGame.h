@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine.h"
 #include "Input.h"
+#include "ETime.h"
 
 #include "Rectangle.h"
 #include "AssetLoader.h"

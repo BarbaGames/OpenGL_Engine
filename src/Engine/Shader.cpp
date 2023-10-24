@@ -54,10 +54,10 @@ namespace MyEngine
         shapeShaderProgram = createShader(sourceShape.VertexSource, sourceShape.FragmentSource);
         textureShaderProgram = createShader(sourceTexture.VertexSource, sourceTexture.FragmentSource);
 
-        Renderer::setShaderProgram(shapeShaderProgram);
+        setShaderProgram(shapeShaderProgram);
     }
 
-    void Shader::unloadShaders() {
+    void Shader::unloadBasicShaders() {
         glDeleteProgram(shapeShaderProgram);
         glDeleteProgram(textureShaderProgram);
     }
@@ -118,5 +118,10 @@ namespace MyEngine
         }
         
         return {ss[0].str(), ss[1].str()}; // Returns a ShaderProgramSource struct that contains the 2 shaders in its strings
+    }
+
+    void 
+        Shader::setShaderProgram(unsigned int shaderProgram) {
+        glUseProgram(shaderProgram);
     }
 }

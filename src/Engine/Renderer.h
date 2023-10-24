@@ -13,14 +13,10 @@ namespace MyEngine {
     class Renderer
     {
     private:
-        static unsigned int shapeShaderProgram;
-        static unsigned int textureShaderProgram;
         static glm::mat4 projMatrix;
         static glm::mat4 viewMatrix;
         static glm::mat4 modelMatrix;
 
-        static unsigned int compileShader(unsigned int type, string& source);
-        static int createShader(string& vertexShader, string& fragmentShader);
         static void setUpVertexAttributesShape();
         static void setUpVertexAttributesTexture();
         static unsigned int createVertexArrayObject();
@@ -36,12 +32,8 @@ namespace MyEngine {
             string FragmentSource;
         };
         
-        static void loadBasicShaders();
-        static void unloadBasicShaders();
         static void swapBuffers(GLFWwindow* window);
         static void clear();
-        // Reads a file containing shaders and returns them
-        static ShaderProgramSource parseShader(const string& filepath);
         // -- Draw functions --
         template <size_t N, size_t N2>
         static void drawShape(float(&vertexData)[N], unsigned int(&indices)[N2]);
@@ -59,8 +51,6 @@ namespace MyEngine {
         static void setViewMatrix(glm::mat4 newViewMatrix);
         // Sets the model matrix
         static void setModelMatrix(glm::mat4 newModelMatrix);
-        // Uses the selected shader program
-        static void setShaderProgram(unsigned int shaderProgram);
 
         static double getFrameTime();
     };
