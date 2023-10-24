@@ -51,6 +51,7 @@ namespace MyEngine {
 
     void AssetLoader::unloadImage(unsigned int id) {
         glDeleteTextures(1, &id);
+        cout << "Texture was unloaded!\n";
     }
 
 }

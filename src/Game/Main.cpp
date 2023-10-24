@@ -31,7 +31,7 @@ Pong::Pong() {
 							   /*Size/Scale*/ { 80, 80, 0 }, 
 							   /*Color*/ { 170.0f, 0.0f, 255.0f });
 
-	sprite = new Sprite(/*Position*/{ 100, 100, 0 },
+	sprite = new Sprite(/*Position*/{ 500, 100, 0 },
 						/*Size/Scale*/{ 50, 50, 0 },
 						/*Color*/{ 255.0f, 255.0f, 255.0f});
 
@@ -71,8 +71,8 @@ void Pong::uninit() {
 void Pong::draw() {
 	Renderer::clear();
 
-	//rectangle->draw();
-	//rectangle2->draw();
+	rectangle->draw();
+	rectangle2->draw();
 	sprite->draw();
 }
 
