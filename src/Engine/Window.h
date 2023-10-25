@@ -21,6 +21,9 @@ namespace MyEngine {
         // Adds glfw context to the window
         void makeContext(Engine* engine) const;
 
+        // Changes the title of the window
+        void setTitle(const char* title);
+
         // Enables or disables vsync (This will limit the fps to your monitor's maximum saving you gpu resources.)
         void setVsyncEnabled(bool set);
 

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "BaseGame.h"
 
@@ -72,6 +73,10 @@ void Pong::update() {
 	else {
 		sprite2->setMirrorX(true);
 	}
+
+	string title = "Engine Test (FPS: " + to_string(ETime::getFPS()) + ")";
+
+	window->setTitle(title.c_str());
 
 	draw();
 }

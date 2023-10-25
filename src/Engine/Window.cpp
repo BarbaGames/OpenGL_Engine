@@ -35,6 +35,10 @@ namespace MyEngine {
         engine->initGlew();
     }
 
+    void Window::setTitle(const char* title) {
+        glfwSetWindowTitle(window, title);
+    }
+
     void Window::setVsyncEnabled(bool set) {
         glfwSwapInterval(set);
     }
