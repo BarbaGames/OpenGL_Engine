@@ -13,10 +13,10 @@ namespace MyEngine {
     }
 
     unsigned int AssetLoader::loadImage(string filePath) {
-        cout << "Loading image at " << filePath << "\n...\n";
+        cout << "Loading texture at " << filePath << " ...\n";
         if (!fileExists(filePath)) {
-            cout << "File not found: " << filePath << "\n";
-            return 0; // Return 0 to indicate failure
+            cout << "No texture was found at the specified path!\n";
+            return 0;
         }
 
         unsigned int texture = 0;
@@ -33,14 +33,13 @@ namespace MyEngine {
         unsigned char* data = stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
 
         if (data) {
-            //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
-            cout << "Texture was loaded!\n";
+            cout << "The texture was loaded!\n";
         }
         else {
-            std::cout << "Failed to load texture: " << filePath << std::endl;
-            std::cout << "Reason: " << stbi_failure_reason() << std::endl;
+            cout << "Failed to load texture!!\n";
+            cout << "Reason: " << stbi_failure_reason() << "\n";
             glDeleteTextures(1, &texture);
             return 0;
         }

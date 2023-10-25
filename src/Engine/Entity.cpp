@@ -11,18 +11,7 @@ namespace MyEngine {
 	}
 
 	Entity::~Entity() {
-		if(textureLoaded) {
-			delete texture;
-		}
-	}
 
-	void Entity::LoadTexture(std::string path) {
-		if(!texture) {
-			texture = new Texture();
-		}
-		if(texture) {
-			textureLoaded = texture->LoadTexture(path);
-		}
 	}
 
 	Transform Entity::getTransform() const {
