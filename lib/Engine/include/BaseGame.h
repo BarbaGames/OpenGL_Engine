@@ -6,6 +6,7 @@
 #include "Rectangle.h"
 #include "AssetLoader.h"
 #include "Sprite.h"
+#include "Animation.h"
 
 namespace MyEngine {
 

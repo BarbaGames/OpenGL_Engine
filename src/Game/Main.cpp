@@ -13,6 +13,7 @@ private:
 	Rectangle* rectangle2;
 	Sprite* sprite;
 	Sprite* sprite2;
+	Animation* anim;
     void init() override;
     void update() override;
     void uninit() override;
@@ -40,6 +41,9 @@ Pong::Pong() {
 	sprite2 = new Sprite(/*Position*/ { Window::getWindowWidth() * .5f, Window::getWindowHeight() * .7f, 0 },
 						 /*Size/Scale*/ { 35, 35, 0 },
 						 /*Color*/{ 255.0f, 255.0f, 255.0f });
+	anim = new Animation(/*Position*/{ Window::getWindowWidth() * .3f, Window::getWindowHeight() * .7f, 0 },
+						 /*Size/Scale*/{ 50, 50, 0 },
+						 /*Color*/{ 255.0f, 255.0f, 255.0f });
 
 	direction = 1;
 }
@@ -54,6 +58,8 @@ void Pong::init()
 	sprite->setImage(textureID);
 	unsigned int textureID2 = AssetLoader::loadImage("sus.png");
 	sprite2->setImage(textureID2);
+	unsigned int spriteSheetID = AssetLoader::loadImage("spritesheet.png");
+	anim->setSpriteSheet(spriteSheetID, 10, 1);
 }
 
 void Pong::update() {
@@ -94,6 +100,7 @@ void Pong::draw() {
 	rectangle2->draw();
 	sprite->draw();
 	sprite2->draw();
+	anim->draw();
 }
 
 int main() {
