@@ -13,13 +13,23 @@ namespace MyEngine {
 		float frameWidth;
 		float frameHeight;
 
+		double durationInSecs;
+		double elapsedTime;
+
+		int mirrorX;
+		int mirrorY;
+
 		void setVertex();
 	public:
 		Animation(Vector3 position, Vector3 scale, Color color);
 		virtual ~Animation() override;
 
-		void setSpriteSheet(unsigned int spriteSheetID, int amountColumns, int amountRows);
+		void update();
+
+		void setSpriteSheet(unsigned int spriteSheetID, int amountColumns, int amountRows, double durationInSecs);
 		void setFrame(int frame);
+		void setMirrorX(bool mirrorX);
+		void setMirrorY(bool mirrorY);
 
 		void draw();
 	};

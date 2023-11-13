@@ -1,6 +1,7 @@
 #include "Animation.h"
 
 #include "AssetLoader.h"
+#include "ETime.h"
 
 namespace MyEngine {
 
@@ -12,6 +13,12 @@ namespace MyEngine {
 
 		frameWidth = 0.0f;
 		frameHeight = 0.0f;
+
+		elapsedTime = 0.00;
+		durationInSecs = 0.00;
+
+		mirrorX = 1;
+		mirrorY = 1;
 		
 		setVertex();
 	}
@@ -29,14 +36,22 @@ namespace MyEngine {
 		alignVertex();
 	}
 
-	void Animation::setSpriteSheet(unsigned int spriteSheetID, int amountColumns, int amountRows) {
+	void Animation::update()
+	{
+		elapsedTime += ETime::getDeltaTime();
+
+		double normalizedTime = fmod(elapsedTime, durationInSecs);
+		currentFrame = static_cast<int>(normalizedTime / durationInSecs * amountFrames) * mirrorX;
+	}
+
+	void Animation::setSpriteSheet(unsigned int spriteSheetID, int amountColumns, int amountRows, double durationInSecs) {
 		this->spriteSheetID = spriteSheetID;
 
 		// Set the rest of the variables
 		frameWidth = 1.0f / amountColumns;
-		cout << frameWidth << "\n";
 		frameHeight = 1.0f / amountRows;
 		amountFrames = amountColumns * amountRows;
+		this->durationInSecs = durationInSecs;
 	}
 
 	void Animation::setFrame(int frame) {
@@ -48,12 +63,20 @@ namespace MyEngine {
 		}
 	}
 
+	void Animation::setMirrorX(bool mirrorX) {
+		mirrorX ? this->mirrorX = -1 : this->mirrorX = 1;
+	}
+
+	void Animation::setMirrorY(bool mirrorY) {
+		mirrorY ? this->mirrorY = -1 : this->mirrorY = 1;
+	}
+
 	void Animation::draw() {
 		float vertexData[] = {
-			vertex[0].x, vertex[0].y, vertex[0].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ frameWidth * (currentFrame + 1.0f) /*1.0f*/, 1.0f,
-			vertex[1].x, vertex[1].y, vertex[1].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ frameWidth * (currentFrame + 1.0f) /*1.0f*/, 0.0f,
-			vertex[2].x, vertex[2].y, vertex[2].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ frameWidth * currentFrame /*0.0f*/, 0.0f,
-			vertex[3].x, vertex[3].y, vertex[3].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ frameWidth * currentFrame /*0.0f*/, 1.0f
+			vertex[0].x, vertex[0].y, vertex[0].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ mirrorX * frameWidth * (currentFrame + 1.0f), mirrorY * 1.0f,
+			vertex[1].x, vertex[1].y, vertex[1].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ mirrorX * frameWidth * (currentFrame + 1.0f), mirrorY * 0.0f,
+			vertex[2].x, vertex[2].y, vertex[2].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ mirrorX * frameWidth * currentFrame, mirrorY * 0.0f,
+			vertex[3].x, vertex[3].y, vertex[3].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ mirrorX * frameWidth * currentFrame, mirrorY * 1.0f
 		};
 		unsigned int indices[] = {
 			0, 1, 3,  // First Triangle

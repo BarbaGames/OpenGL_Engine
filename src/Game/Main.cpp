@@ -42,7 +42,7 @@ Pong::Pong() {
 						 /*Size/Scale*/ { 35, 35, 0 },
 						 /*Color*/{ 255.0f, 255.0f, 255.0f });
 	anim = new Animation(/*Position*/{ Window::getWindowWidth() * .3f, Window::getWindowHeight() * .7f, 0 },
-						 /*Size/Scale*/{ 50, 50, 0 },
+						 /*Size/Scale*/{ 100, 100, 0 },
 						 /*Color*/{ 255.0f, 255.0f, 255.0f });
 
 	direction = 1;
@@ -59,7 +59,7 @@ void Pong::init()
 	unsigned int textureID2 = AssetLoader::loadImage("sus.png");
 	sprite2->setImage(textureID2);
 	unsigned int spriteSheetID = AssetLoader::loadImage("spritesheet.png");
-	anim->setSpriteSheet(spriteSheetID, 10, 1);
+	anim->setSpriteSheet(spriteSheetID, 10, 1, 1.0);
 }
 
 void Pong::update() {
@@ -75,10 +75,13 @@ void Pong::update() {
 	sprite2->rotate({ 0, 0, 0, -0.1f });
 	if (direction > 0) {
 		sprite2->setMirrorX(false);
+		anim->setMirrorX(false);
 	}
 	else {
 		sprite2->setMirrorX(true);
+		anim->setMirrorX(true);
 	}
+	anim->update();
 
 	string title = "Engine Test (FPS: " + to_string(ETime::getFPS()) + ")";
 
