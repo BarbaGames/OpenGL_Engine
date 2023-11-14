@@ -88,4 +88,26 @@ namespace MyEngine {
 		transform.rotationQuat.y += rotation.y;
 		transform.rotationQuat.z += rotation.z;
 	}
+
+	bool Entity::isColliding(Transform _transform)
+	{
+		if (transform.position.x + transform.scale.x >= _transform.position.x &&		
+		transform.position.x <= _transform.position.x + _transform.scale.x &&    
+		transform.position.y + transform.scale.y >= _transform.position.y &&			
+		transform.position.y <= _transform.position.y + _transform.scale.y) {    
+			return true;
+		}
+		return false;
+	}
+
+	bool Entity::isColliding(float x, float y, float width, float height)
+	{
+		if (transform.position.x + transform.scale.x >= x &&		
+		transform.position.x <= x + width &&    
+		transform.position.y + transform.scale.y >= y &&			
+		transform.position.y <= y + height) {    
+			return true;
+		}
+		return false;
+	}
 }

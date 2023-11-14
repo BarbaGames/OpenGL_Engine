@@ -32,7 +32,8 @@ namespace MyEngine {
 		void setRotationQuat(Quaternion rotation);
 		void setRotationEuler(Vector3 rotation);
 		void setColor(Color color);
-
+		bool isColliding(Transform _transform);
+		bool isColliding(float x, float y, float width, float height);
 		// --
 
 		void move(Vector3 position);
