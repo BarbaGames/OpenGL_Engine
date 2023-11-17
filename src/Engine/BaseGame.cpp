@@ -51,6 +51,7 @@ namespace MyEngine {
 		uninit();
 
 		Shader::unloadBasicShaders();
+		AssetLoader::unloadAllImages();
 	}
 
 	// Public

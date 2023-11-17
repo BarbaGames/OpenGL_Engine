@@ -54,12 +54,14 @@ Pong::~Pong() {
 
 void Pong::init()
 {
-	unsigned int textureID = AssetLoader::loadImage("spaceship.png");
+	unsigned int textureID = AssetLoader::loadImage("spaceship.png", "Spaceship");
 	sprite->setImage(textureID);
-	unsigned int textureID2 = AssetLoader::loadImage("sus.png");
+	unsigned int textureID2 = AssetLoader::loadImage("sus.png", "Amogus");
 	sprite2->setImage(textureID2);
-	unsigned int spriteSheetID = AssetLoader::loadImage("spritesheet.png");
+	unsigned int spriteSheetID = AssetLoader::loadImage("spritesheet.png", "MegamanSS");
 	anim->setSpriteSheet(spriteSheetID, 10, 1, 1.0);
+
+	cout << AssetLoader::getTexture("Amogus") << "\n";
 }
 
 void Pong::update() {
