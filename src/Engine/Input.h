@@ -17,6 +17,7 @@ public:
     
     float getMouseX() const;
     float getMouseY() const;
+    bool isKeyDown();
 private:
     GLFWwindow* window;
     glm::dvec2 mousePosition;
