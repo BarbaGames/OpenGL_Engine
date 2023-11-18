@@ -13,7 +13,8 @@ private:
 	Rectangle* rectangle2;
 	Sprite* sprite;
 	Sprite* sprite2;
-	Animation* anim;
+	Animation* animCoin;
+	Animation* animBat;
     void init() override;
     void update() override;
     void uninit() override;
@@ -41,9 +42,14 @@ Pong::Pong() {
 	sprite2 = new Sprite(/*Position*/ { Window::getWindowWidth() * .5f, Window::getWindowHeight() * .7f, 0 },
 						 /*Size/Scale*/ { 35, 35, 0 },
 						 /*Color*/{ 255.0f, 255.0f, 255.0f });
-	anim = new Animation(/*Position*/{ Window::getWindowWidth() * .3f, Window::getWindowHeight() * .7f, 0 },
-						 /*Size/Scale*/{ 100, 100, 0 },
+
+	animCoin = new Animation(/*Position*/{ Window::getWindowWidth() * .3f, Window::getWindowHeight() * .7f, 0 },
+						 /*Size/Scale*/{ 50, 50, 0 },
 						 /*Color*/{ 255.0f, 255.0f, 255.0f });
+
+	animBat = new Animation(/*Position*/{ Window::getWindowWidth() * .5f, Window::getWindowHeight() * .3f, 0 },
+							/*Size/Scale*/{ 75, 75, 0 },
+							/*Color*/{ 255.0f, 255.0f, 255.0f });
 
 	direction = 1;
 }
@@ -58,8 +64,21 @@ void Pong::init()
 	sprite->setImage(textureID);
 	unsigned int textureID2 = AssetLoader::loadImage("sus.png", "Amogus");
 	sprite2->setImage(textureID2);
-	unsigned int spriteSheetID = AssetLoader::loadImage("spritesheet.png", "MegamanSS");
-	anim->setSpriteSheet(spriteSheetID, 10, 1, 1.0);
+	unsigned int coinTX = AssetLoader::loadImage("coinSS.png", "CoinSS");
+	animCoin->setSpriteSheet(coinTX, 8, 1, 1.0);
+	unsigned int batTX = AssetLoader::loadImage("batSS.png", "BatSS");
+	// Esto esta todo hardcodeado, pero es un ejemplo de como manualmente setear los frames.
+	float frameWidth = 1.0f / 4;
+	float frameHeight = 1.0f / 4;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (j > 0) {
+				animBat->addFrame(batTX, frameWidth * j, frameHeight * i, frameWidth, frameHeight);
+			}
+		}
+	}
+	animBat->setDurationInSecs(1.5);
+	// 
 }
 
 void Pong::update() {
@@ -75,13 +94,12 @@ void Pong::update() {
 	sprite2->rotate({ 0, 0, 0, -0.1f });
 	if (direction > 0) {
 		sprite2->setMirrorX(false);
-		anim->setMirrorX(false);
 	}
 	else {
 		sprite2->setMirrorX(true);
-		anim->setMirrorX(true);
 	}
-	anim->update();
+	animCoin->update();
+	animBat->update();
 
 	string title = "Engine Test (FPS: " + to_string(ETime::getFPS()) + ")";
 
@@ -94,6 +112,9 @@ void Pong::uninit() {
 	delete rectangle;
 	delete rectangle2;
 	delete sprite;
+	delete sprite2;
+	delete animCoin;
+	delete animBat;
 }
 
 void Pong::draw() {
@@ -103,7 +124,8 @@ void Pong::draw() {
 	rectangle2->draw();
 	sprite->draw();
 	sprite2->draw();
-	anim->draw();
+	animCoin->draw();
+	animBat->draw();
 }
 
 int main() {
