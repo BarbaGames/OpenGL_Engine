@@ -7,24 +7,19 @@ namespace MyEngine {
 
 	Animation::Animation(Vector3 position, Vector3 scale, Color color) :
 		Shape({ position, scale, {0,0,0}, {0, 0, 0, 0}, {1,0,0}, {0,1,0}, {0,0,1}, color }) {
-		spriteSheetID = 0;
-		currentFrame = 0;
-		amountFrames = 0;
-
-		frameWidth = 0.0f;
-		frameHeight = 0.0f;
+		currentFrameIndex = 0;
 
 		elapsedTime = 0.00;
 		durationInSecs = 0.00;
 
-		mirrorX = 1;
-		mirrorY = 1;
+		mirrorX = false;
+		mirrorY = false;
 		
 		setVertex();
 	}
 
 	Animation::~Animation() {
-		AssetLoader::unloadImage(spriteSheetID);
+
 	}
 
 	void Animation::setVertex() {
@@ -36,27 +31,58 @@ namespace MyEngine {
 		alignVertex();
 	}
 
-	void Animation::update()
-	{
+	void Animation::update() {
 		elapsedTime += ETime::getDeltaTime();
 
 		double normalizedTime = fmod(elapsedTime, durationInSecs);
-		currentFrame = static_cast<int>(normalizedTime / durationInSecs * amountFrames) * mirrorX;
+		int totalFrames = static_cast<int>(frames.size());
+		int framesPerSecond = static_cast<int>(totalFrames / durationInSecs);
+		int currentFrame = static_cast<int>(normalizedTime * framesPerSecond) % totalFrames;
+
+		if (mirrorX) {
+			currentFrameIndex = totalFrames - 1 - currentFrame;
+		}
+		else {
+			currentFrameIndex = currentFrame;
+		}
+	}
+
+	void Animation::addFrame(unsigned int textureID, float offsetX, float offsetY, float width, float height) {
+		Frame frame;
+		frame.textureID = textureID;
+
+		frame.uvCoords[0] = { offsetX + width, offsetY + height };
+		frame.uvCoords[1] = { offsetX + width, offsetY };
+		frame.uvCoords[2] = { offsetX, offsetY };
+		frame.uvCoords[3] = { offsetX, offsetY + height };
+
+		frames.push_back(frame);
 	}
 
 	void Animation::setSpriteSheet(unsigned int spriteSheetID, int amountColumns, int amountRows, double durationInSecs) {
-		this->spriteSheetID = spriteSheetID;
+		frames.clear();
 
-		// Set the rest of the variables
-		frameWidth = 1.0f / amountColumns;
-		frameHeight = 1.0f / amountRows;
-		amountFrames = amountColumns * amountRows;
+		float frameWidth = 1.0f / amountColumns;
+		float frameHeight = 1.0f / amountRows;
+		int amountFrames = amountColumns * amountRows;
+		this->durationInSecs = durationInSecs;
+
+		for (int row = 0; row < amountRows; ++row) {
+			for (int col = 0; col < amountColumns; ++col) {
+				float offsetX = col * frameWidth;
+				float offsetY = row * frameHeight;
+				addFrame(spriteSheetID, offsetX, offsetY, frameWidth, frameHeight);
+			}
+		}
+	}
+
+	void Animation::setDurationInSecs(double durationInSecs) {
 		this->durationInSecs = durationInSecs;
 	}
 
-	void Animation::setFrame(int frame) {
-		if (frame > 0 && frame < amountFrames) {
-			currentFrame = frame;
+	void Animation::setCurrentFrame(int frame) {
+		if (frame > 0 && frame < frames.size()) {
+			currentFrameIndex = frame;
 		}
 		else {
 			cout << "Frame out of bounds!\n";
@@ -64,19 +90,33 @@ namespace MyEngine {
 	}
 
 	void Animation::setMirrorX(bool mirrorX) {
-		mirrorX ? this->mirrorX = -1 : this->mirrorX = 1;
+		if (this->mirrorX == mirrorX) return;
+		this->mirrorX = mirrorX;
+		for (auto& frame : frames) {
+			for (int i = 0; i < 4; ++i) {
+				frame.uvCoords[i].u = 1.0f - frame.uvCoords[i].u;
+			}
+		}
 	}
 
 	void Animation::setMirrorY(bool mirrorY) {
-		mirrorY ? this->mirrorY = -1 : this->mirrorY = 1;
+		if (this->mirrorY == mirrorY) return;
+		this->mirrorY = mirrorY;
+		for (auto& frame : frames) {
+			for (int i = 0; i < 4; ++i) {
+				frame.uvCoords[i].v = 1.0f - frame.uvCoords[i].v;
+			}
+		}
 	}
 
 	void Animation::draw() {
+		Frame& currentFrame = frames[currentFrameIndex];
+
 		float vertexData[] = {
-			vertex[0].x, vertex[0].y, vertex[0].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ mirrorX * frameWidth * (currentFrame + 1.0f), mirrorY * 1.0f,
-			vertex[1].x, vertex[1].y, vertex[1].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ mirrorX * frameWidth * (currentFrame + 1.0f), mirrorY * 0.0f,
-			vertex[2].x, vertex[2].y, vertex[2].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ mirrorX * frameWidth * currentFrame, mirrorY * 0.0f,
-			vertex[3].x, vertex[3].y, vertex[3].z, /**/ transform.color.r, transform.color.g, transform.color.b, /**/ mirrorX * frameWidth * currentFrame, mirrorY * 1.0f
+			vertex[0].x, vertex[0].y, vertex[0].z, transform.color.r, transform.color.g, transform.color.b, currentFrame.uvCoords[0].u, currentFrame.uvCoords[0].v,
+			vertex[1].x, vertex[1].y, vertex[1].z, transform.color.r, transform.color.g, transform.color.b, currentFrame.uvCoords[1].u, currentFrame.uvCoords[1].v,
+			vertex[2].x, vertex[2].y, vertex[2].z, transform.color.r, transform.color.g, transform.color.b, currentFrame.uvCoords[2].u, currentFrame.uvCoords[2].v,
+			vertex[3].x, vertex[3].y, vertex[3].z, transform.color.r, transform.color.g, transform.color.b, currentFrame.uvCoords[3].u, currentFrame.uvCoords[3].v
 		};
 		unsigned int indices[] = {
 			0, 1, 3,  // First Triangle
@@ -101,7 +141,7 @@ namespace MyEngine {
 		glActiveTexture(GL_TEXTURE0);
 
 		Renderer::setModelMatrix(modelMatrix);
-		Renderer::drawTexture(vertexData, indices, spriteSheetID);
+		Renderer::drawTexture(vertexData, indices, currentFrame.textureID);
 
 		glDisable(GL_BLEND);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

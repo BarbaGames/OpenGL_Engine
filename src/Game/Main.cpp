@@ -60,8 +60,6 @@ void Pong::init()
 	sprite2->setImage(textureID2);
 	unsigned int spriteSheetID = AssetLoader::loadImage("spritesheet.png", "MegamanSS");
 	anim->setSpriteSheet(spriteSheetID, 10, 1, 1.0);
-
-	cout << AssetLoader::getTexture("Amogus") << "\n";
 }
 
 void Pong::update() {

@@ -14,7 +14,7 @@ namespace MyEngine {
 	}
 
 	Sprite::~Sprite() {
-		AssetLoader::unloadImage(textureID);
+
 	}
 
 	void Sprite::setVertex() {

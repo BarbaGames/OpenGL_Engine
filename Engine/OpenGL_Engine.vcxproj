@@ -42,6 +42,7 @@
     <ClInclude Include="..\src\Engine\Engine.h" />
     <ClInclude Include="..\src\Engine\Entity.h" />
     <ClInclude Include="..\src\Engine\ETime.h" />
+    <ClInclude Include="..\src\Engine\Frame.h" />
     <ClInclude Include="..\src\Engine\Input.h" />
     <ClInclude Include="..\src\Engine\Maths.h" />
     <ClInclude Include="..\src\Engine\Rectangle.h" />

@@ -1,23 +1,22 @@
 #pragma once
 
 #include "Shape.h"
+#include "Frame.h"
+
+#include <vector>
 
 namespace MyEngine {
 
 	class DLLExport Animation : public Shape {
 	private:
-		unsigned int spriteSheetID;
-		int currentFrame;
-		int amountFrames;
-
-		float frameWidth;
-		float frameHeight;
+		vector<Frame> frames;
+		int currentFrameIndex;
 
 		double durationInSecs;
 		double elapsedTime;
 
-		int mirrorX;
-		int mirrorY;
+		bool mirrorX;
+		bool mirrorY;
 
 		void setVertex();
 	public:
@@ -26,8 +25,11 @@ namespace MyEngine {
 
 		void update();
 
+		void addFrame(unsigned int textureID, float offsetX, float offsetY, float width, float height);
+
 		void setSpriteSheet(unsigned int spriteSheetID, int amountColumns, int amountRows, double durationInSecs);
-		void setFrame(int frame);
+		void setDurationInSecs(double durationInSecs);
+		void setCurrentFrame(int frame);
 		void setMirrorX(bool mirrorX);
 		void setMirrorY(bool mirrorY);
 

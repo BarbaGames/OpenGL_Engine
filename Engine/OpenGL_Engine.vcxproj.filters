@@ -107,5 +107,8 @@
     <ClInclude Include="..\src\Engine\Triangle.h">
       <Filter>Source Files\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Engine\Frame.h">
+      <Filter>Source Files\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
