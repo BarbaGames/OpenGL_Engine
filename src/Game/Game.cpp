@@ -13,6 +13,7 @@ Game::Game() {
 	rectangle = new Rectangle(/*Position*/ { 100, 100, 0 }, 
 							  /*Size/Scale*/ {100, 100, 0}, 
 							  /*Color*/ {255.0f, 128.0f, 0.0f});
+	
 	rectangle2 = new Rectangle(/*Position*/ { Window::getWindowWidth() * .5f, Window::getWindowHeight() * .7f, 0 }, 
 							   /*Size/Scale*/ { 80, 80, 0 }, 
 							   /*Color*/ { 170.0f, 0.0f, 255.0f });
@@ -20,11 +21,11 @@ Game::Game() {
 	sprite = new Sprite(/*Position*/{ 500, 100, 0 },
 						/*Size/Scale*/ { 50, 50, 0 },
 						/*Color*/{ 255.0f, 255.0f, 255.0f});
-
+	
 	sprite2 = new Sprite(/*Position*/ { Window::getWindowWidth() * .5f, Window::getWindowHeight() * .7f, 0 },
 						 /*Size/Scale*/ { 35, 35, 0 },
 						 /*Color*/{ 255.0f, 255.0f, 255.0f });
-
+	
 	animCoin = new Animation(/*Position*/{ Window::getWindowWidth() * .3f, Window::getWindowHeight() * .7f, 0 },
 						 /*Size/Scale*/{ 50, 50, 0 },
 						 /*Color*/{ 255.0f, 255.0f, 255.0f });
@@ -34,9 +35,10 @@ Game::Game() {
 							/*Color*/{ 255.0f, 255.0f, 255.0f });
 
 	direction = 1;
-	Entity* obstacles[] = { static_cast<Entity*>(rectangle2), static_cast<Entity*>(sprite), static_cast<Entity*>(sprite2),
+	std::vector<Entity*> obstacles = { static_cast<Entity*>(rectangle2), static_cast<Entity*>(sprite), static_cast<Entity*>(sprite2),
 		static_cast<Entity*>(animCoin), static_cast<Entity*>(animBat) };
-	collisionManager = new CollisionManager(*obstacles);
+	
+	collisionManager = new CollisionManager(obstacles);
 }
 
 Game::~Game() {
@@ -106,7 +108,7 @@ void Game::uninit() {
 
 void Game::draw() {
 	Renderer::clear();
-
+	
 	rectangle->draw();
 	rectangle2->draw();
 	sprite->draw();

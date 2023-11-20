@@ -1,12 +1,16 @@
 ﻿#include "CollisionManager.h"
 
-CollisionManager::CollisionManager(Entity obstacles[]) : obstacles{obstacles}
+CollisionManager::CollisionManager(const std::vector<Entity*>& obstacles) : obstacles{obstacles}
 {
 }
 
 CollisionManager::~CollisionManager()
 {
-    delete obstacles;
+    for (Entity* obstacle : obstacles) {
+        delete obstacle;
+    }
+
+    obstacles.clear();
 }
 
 bool CollisionManager::checkCollision(Entity* player)

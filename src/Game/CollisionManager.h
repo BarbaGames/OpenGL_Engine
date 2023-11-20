@@ -6,12 +6,12 @@ using namespace MyEngine;
 class CollisionManager
 {
 public:
-    CollisionManager(Entity obstacles[]);
+    CollisionManager(const std::vector<Entity*>& obstacles);
     ~CollisionManager();
     bool checkCollision(Entity* player);
     bool checkCollision(Transform transform);
     
 private:
-    Entity* obstacles[];
+    std::vector<Entity*> obstacles;
 };
  
