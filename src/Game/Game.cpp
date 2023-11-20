@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 
+#include "Dictionary.h"
+
 
 // Namespace temporal
 
@@ -32,7 +34,8 @@ Game::Game() {
 							/*Color*/{ 255.0f, 255.0f, 255.0f });
 
 	direction = 1;
-	Entity* obstacles[] = { rectangle2, sprite, sprite2, animCoin, animBat };
+	Entity* obstacles[] = { static_cast<Entity*>(rectangle2), static_cast<Entity*>(sprite), static_cast<Entity*>(sprite2),
+		static_cast<Entity*>(animCoin), static_cast<Entity*>(animBat) };
 	collisionManager = new CollisionManager(*obstacles);
 }
 
@@ -116,14 +119,14 @@ void Game::movement(Entity* player) {
 	if(!input->isKeyDown()) return;
 	Transform transform = player->getTransform();
 	
-	if(input->getKeyDown(68)) {// D
+	if(input->getKeyDown(Key_D)) {// D
 		transform.position.x += 2.0f;
 		if(!collisionManager->checkCollision(transform)) {
 			player->move({2.f, 0.f,0.f});
 		}
 	}
 	
-	if(input->getKeyDown(87)) { // W
+	if(input->getKeyDown(Key_W)) { // W
 		transform.position.y -= 2.0f;
 		if(!collisionManager->checkCollision(transform))
 		{
@@ -131,7 +134,7 @@ void Game::movement(Entity* player) {
 		}
 	}
 
-	if(input->getKeyDown(83)) { // S
+	if(input->getKeyDown(Key_S)) { // S
 		transform.position.y += 2.0f;
 		if(!collisionManager->checkCollision(transform))
 		{
@@ -139,7 +142,7 @@ void Game::movement(Entity* player) {
 		}
 	}
 	
-	if(input->getKeyDown(65)) { // A
+	if(input->getKeyDown(Key_A)) { // A
 		transform.position.x -= 2.0f;
 		if(!collisionManager->checkCollision(transform))
 		{
