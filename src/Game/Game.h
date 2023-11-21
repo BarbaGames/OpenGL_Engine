@@ -8,11 +8,10 @@ class Game : public BaseGame
 {
 private:
     CollisionManager* collisionManager;
-    Rectangle* rectangle2;
-    Sprite* sprite;
-    Sprite* sprite2;
-    Animation* animCoin;
-    Animation* animBat;
+    Rectangle* floorCollision;
+    Animation* signboard;
+    Animation* player;
+    Sprite* background;
     int direction;
 
     void init() override;
