@@ -121,22 +121,18 @@ void Game::animationMovement(Animation* animation, string indexDown, string inde
 	if (!input->isKeyDown()) return;
 
 	if (input->getKeyDown(Key_W)) { // W
-		if (animation->getCurrentAnimation() == indexUp) return;
 		animation->setCurrentAnimation(indexUp);
 	}
 
 	if (input->getKeyDown(Key_A)) { // A
-		if (animation->getCurrentAnimation() == indexLeft) return;
 		animation->setCurrentAnimation(indexLeft);
 	}
 
 	if (input->getKeyDown(Key_D)) {// D
-		if (animation->getCurrentAnimation() == indexRight) return;
 		animation->setCurrentAnimation(indexRight);
 	}
 
 	if (input->getKeyDown(Key_S)) { // S
-		if (animation->getCurrentAnimation() == indexDown) return;
 		animation->setCurrentAnimation(indexDown);
 	}
 }

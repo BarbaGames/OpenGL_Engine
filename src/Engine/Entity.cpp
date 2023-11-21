@@ -91,12 +91,26 @@ namespace MyEngine {
 
 	bool Entity::isColliding(Transform _transform)
 	{
-		if (transform.position.x + transform.scale.x >= _transform.position.x &&		
-		transform.position.x <= _transform.position.x + _transform.scale.x &&    
-		transform.position.y + transform.scale.y >= _transform.position.y &&			
-		transform.position.y <= _transform.position.y + _transform.scale.y) {    
+		float xOffset = 0.5f * transform.scale.x;
+		float yOffset = 0.5f * transform.scale.y;
+
+		float thisAdjustedX = transform.position.x - xOffset;
+		float thisAdjustedY = transform.position.y - yOffset;
+
+		xOffset = 0.5f * _transform.scale.x;
+		yOffset = 0.5f * _transform.scale.y;
+
+		float otherAdjustedX = _transform.position.x - xOffset;
+		float otherAdjustedY = _transform.position.y - yOffset;
+
+		if (thisAdjustedX + transform.scale.x >= otherAdjustedX &&
+			thisAdjustedX <= otherAdjustedX + _transform.scale.x &&
+			thisAdjustedY + transform.scale.y >= otherAdjustedY &&
+			thisAdjustedY <= otherAdjustedY + _transform.scale.y)
+		{
 			return true;
 		}
+
 		return false;
 	}
 

@@ -126,6 +126,8 @@ namespace MyEngine {
 	}
 
 	void Animation::setCurrentAnimation(string animationID) {
+		if (!isAnimationValid(animationID)) return;
+		if (currentAnimation == animationID) return;
 		currentAnimation = animationID;
 		currentFrameIndex = 0;
 
