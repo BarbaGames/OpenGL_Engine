@@ -10,10 +10,6 @@
 using namespace std;
 
 Game::Game() {
-	rectangle = new Rectangle(/*Position*/ { 100, 100, 0 }, 
-							  /*Size/Scale*/ {100, 100, 0}, 
-							  /*Color*/ {255.0f, 128.0f, 0.0f});
-	
 	rectangle2 = new Rectangle(/*Position*/ { Window::getWindowWidth() * .5f, Window::getWindowHeight() * .7f, 0 }, 
 							   /*Size/Scale*/ { 80, 80, 0 }, 
 							   /*Color*/ { 170.0f, 0.0f, 255.0f });
@@ -36,7 +32,7 @@ Game::Game() {
 
 	direction = 1;
 	std::vector<Entity*> obstacles = { static_cast<Entity*>(rectangle2), static_cast<Entity*>(sprite), static_cast<Entity*>(sprite2),
-		static_cast<Entity*>(animCoin), static_cast<Entity*>(animBat) };
+		static_cast<Entity*>(animCoin) };
 	
 	collisionManager = new CollisionManager(obstacles);
 }
@@ -53,26 +49,32 @@ void Game::init() {
 	unsigned int coinTX = AssetLoader::loadImage("coinSS.png", "CoinSS");
 	animCoin->setSpriteSheet(coinTX, 8, 1, 1.0);
 	unsigned int batTX = AssetLoader::loadImage("batSS.png", "BatSS");
-	
-	// Esto esta todo hardcodeado, pero es un ejemplo de como manualmente setear los frames.
+
+	// Esto esta todo hardcodeado, pero es un ejemplo de como manualmente setear los frames y añadir multiples indices a una animacion.
 	float frameWidth = 1.0f / 4;
 	float frameHeight = 1.0f / 4;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			if (j > 0) {
-				animBat->addFrame(batTX, frameWidth * j, frameHeight * i, frameWidth, frameHeight);
-			}
-		}
+	for (int i = 1; i < 4; i++) { // Empiezo en 1 por que quiero saltearme el primer slot del spritesheet.
+		animBat->addFrame("down", batTX, frameWidth * i, 0, frameWidth, frameHeight); // Le pongo nombre como indice, en este caso este indice es en el que el murcielago va para abajo.
 	}
-	animBat->setDurationInSecs(1.5);
-	// 
+	for (int i = 1; i < 4; i++) {
+		animBat->addFrame("right", batTX, frameWidth * i, frameHeight * 1, frameWidth, frameHeight); // Multiplico la altura por la fila.
+	}
+	for (int i = 1; i < 4; i++) {
+		animBat->addFrame("up", batTX, frameWidth * i, frameHeight * 2, frameWidth, frameHeight);
+	}
+	for (int i = 1; i < 4; i++) {
+		animBat->addFrame("left", batTX, frameWidth * i, frameHeight * 3, frameWidth, frameHeight);
+	}
+	animBat->setDurationInSecs(.5);
+	animBat->setCurrentAnimation("down");
+	//
+
 }
 
 void Game::update() {
-	// When key 87 (W) is pressed, the rotation is to the other side. 
-	//rectangle->rotate({0, 0, 0, input->getKeyDown(87) ? 1.f : -1.f});
-	
-	movement(rectangle);
+	movement(animBat);
+	animationMovement(animBat, "down", "right", "up", "left");
+
 	rectangle2->move({ 2.0f * direction, 0, 0 });
 	if (rectangle2->getTransform().position.x >= Window::getWindowWidth() * .8f || 
 		rectangle2->getTransform().position.x <= Window::getWindowWidth() * .2f) {
@@ -98,7 +100,6 @@ void Game::update() {
 }
 
 void Game::uninit() {
-	delete rectangle;
 	delete rectangle2;
 	delete sprite;
 	delete sprite2;
@@ -109,12 +110,35 @@ void Game::uninit() {
 void Game::draw() {
 	Renderer::clear();
 	
-	rectangle->draw();
 	rectangle2->draw();
 	sprite->draw();
 	sprite2->draw();
 	animCoin->draw();
 	animBat->draw();
+}
+
+void Game::animationMovement(Animation* animation, string indexDown, string indexRight, string indexUp, string indexLeft) {
+	if (!input->isKeyDown()) return;
+
+	if (input->getKeyDown(Key_W)) { // W
+		if (animation->getCurrentAnimation() == indexUp) return;
+		animation->setCurrentAnimation(indexUp);
+	}
+
+	if (input->getKeyDown(Key_A)) { // A
+		if (animation->getCurrentAnimation() == indexLeft) return;
+		animation->setCurrentAnimation(indexLeft);
+	}
+
+	if (input->getKeyDown(Key_D)) {// D
+		if (animation->getCurrentAnimation() == indexRight) return;
+		animation->setCurrentAnimation(indexRight);
+	}
+
+	if (input->getKeyDown(Key_S)) { // S
+		if (animation->getCurrentAnimation() == indexDown) return;
+		animation->setCurrentAnimation(indexDown);
+	}
 }
 
 void Game::movement(Entity* player) {

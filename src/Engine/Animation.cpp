@@ -7,6 +7,7 @@ namespace MyEngine {
 
 	Animation::Animation(Vector3 position, Vector3 scale, Color color) :
 		Shape({ position, scale, {0,0,0}, {0, 0, 0, 0}, {1,0,0}, {0,1,0}, {0,0,1}, color }) {
+		currentAnimation = "default";
 		currentFrameIndex = 0;
 
 		elapsedTime = 0.00;
@@ -22,6 +23,10 @@ namespace MyEngine {
 
 	}
 
+	bool Animation::isAnimationValid(string animationID) {
+		return animations.find(animationID) != animations.end();
+	}
+
 	void Animation::setVertex() {
 		transform.color.normalize();
 		vertex.push_back({ 1, 1, 0 });
@@ -35,7 +40,7 @@ namespace MyEngine {
 		elapsedTime += ETime::getDeltaTime();
 
 		double normalizedTime = fmod(elapsedTime, durationInSecs);
-		int totalFrames = static_cast<int>(frames.size());
+		int totalFrames = static_cast<int>(animations[currentAnimation].size());
 		int framesPerSecond = static_cast<int>(totalFrames / durationInSecs);
 		int currentFrame = static_cast<int>(normalizedTime * framesPerSecond) % totalFrames;
 
@@ -56,11 +61,24 @@ namespace MyEngine {
 		frame.uvCoords[2] = { offsetX, offsetY };
 		frame.uvCoords[3] = { offsetX, offsetY + height };
 
-		frames.push_back(frame);
+		animations["default"].push_back(frame);
+	}
+
+	void Animation::addFrame(string animationID, unsigned int textureID, float offsetX, float offsetY, float width, float height) {
+		Frame frame;
+		frame.textureID = textureID;
+
+		frame.uvCoords[0] = { offsetX + width, offsetY + height };
+		frame.uvCoords[1] = { offsetX + width, offsetY };
+		frame.uvCoords[2] = { offsetX, offsetY };
+		frame.uvCoords[3] = { offsetX, offsetY + height };
+
+		animations[animationID].push_back(frame);
 	}
 
 	void Animation::setSpriteSheet(unsigned int spriteSheetID, int amountColumns, int amountRows, double durationInSecs) {
-		frames.clear();
+		if(isAnimationValid("default"))
+			animations["default"].clear();
 
 		float frameWidth = 1.0f / amountColumns;
 		float frameHeight = 1.0f / amountRows;
@@ -76,12 +94,30 @@ namespace MyEngine {
 		}
 	}
 
+	void Animation::setSpriteSheet(string animationID, unsigned int spriteSheetID, int amountColumns, int amountRows, double durationInSecs) {
+		if (isAnimationValid(animationID))
+			animations[animationID].clear();
+
+		float frameWidth = 1.0f / amountColumns;
+		float frameHeight = 1.0f / amountRows;
+		int amountFrames = amountColumns * amountRows;
+		this->durationInSecs = durationInSecs;
+
+		for (int row = 0; row < amountRows; ++row) {
+			for (int col = 0; col < amountColumns; ++col) {
+				float offsetX = col * frameWidth;
+				float offsetY = row * frameHeight;
+				addFrame(animationID, spriteSheetID, offsetX, offsetY, frameWidth, frameHeight);
+			}
+		}
+	}
+
 	void Animation::setDurationInSecs(double durationInSecs) {
 		this->durationInSecs = durationInSecs;
 	}
 
 	void Animation::setCurrentFrame(int frame) {
-		if (frame > 0 && frame < frames.size()) {
+		if (frame > 0 && frame < animations[currentAnimation].size()) {
 			currentFrameIndex = frame;
 		}
 		else {
@@ -89,10 +125,20 @@ namespace MyEngine {
 		}
 	}
 
+	void Animation::setCurrentAnimation(string animationID) {
+		currentAnimation = animationID;
+		currentFrameIndex = 0;
+
+		elapsedTime = 0.00;
+
+		mirrorX = false;
+		mirrorY = false;
+	}
+
 	void Animation::setMirrorX(bool mirrorX) {
 		if (this->mirrorX == mirrorX) return;
 		this->mirrorX = mirrorX;
-		for (auto& frame : frames) {
+		for (auto& frame : animations[currentAnimation]) {
 			for (int i = 0; i < 4; ++i) {
 				frame.uvCoords[i].u = 1.0f - frame.uvCoords[i].u;
 			}
@@ -102,15 +148,19 @@ namespace MyEngine {
 	void Animation::setMirrorY(bool mirrorY) {
 		if (this->mirrorY == mirrorY) return;
 		this->mirrorY = mirrorY;
-		for (auto& frame : frames) {
+		for (auto& frame : animations[currentAnimation]) {
 			for (int i = 0; i < 4; ++i) {
 				frame.uvCoords[i].v = 1.0f - frame.uvCoords[i].v;
 			}
 		}
 	}
 
+	string Animation::getCurrentAnimation() {
+		return currentAnimation;
+	}
+
 	void Animation::draw() {
-		Frame& currentFrame = frames[currentFrameIndex];
+		Frame& currentFrame = animations[currentAnimation][currentFrameIndex];
 
 		float vertexData[] = {
 			vertex[0].x, vertex[0].y, vertex[0].z, transform.color.r, transform.color.g, transform.color.b, currentFrame.uvCoords[0].u, currentFrame.uvCoords[0].v,
@@ -137,16 +187,12 @@ namespace MyEngine {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		glEnable(GL_TEXTURE_2D);
-		glActiveTexture(GL_TEXTURE0);
-
 		Renderer::setModelMatrix(modelMatrix);
 		Renderer::drawTexture(vertexData, indices, currentFrame.textureID);
 
 		glDisable(GL_BLEND);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
-		glDisable(GL_TEXTURE_2D);
 	}
 
 }

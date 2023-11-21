@@ -8,7 +8,6 @@ class Game : public BaseGame
 {
 private:
     CollisionManager* collisionManager;
-    Rectangle* rectangle;
     Rectangle* rectangle2;
     Sprite* sprite;
     Sprite* sprite2;
@@ -20,6 +19,7 @@ private:
     void update() override;
     void uninit() override;
     void draw();
+    void animationMovement(Animation* animation, string indexDown, string indexRight, string indexUp, string indexLeft);
     void movement(Entity* player);
 
 public:
