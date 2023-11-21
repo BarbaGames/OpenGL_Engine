@@ -1,7 +1,7 @@
-#include "Game.h"
+#include "Parcial.h"
 
 int main() {
-	Game myGame;
-	myGame.runGame();
+	Parcial parcial;
+	parcial.runGame();
 	return 0;
 }
