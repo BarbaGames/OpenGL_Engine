@@ -31,15 +31,15 @@ void Parcial::init() {
 	background->setImage(bg);
 
 	//
-	float frameWidth = 0.034;
-	float frameHeight = 0.08;
-	for (int i = 1; i < 5; i++) {
-		sonic->addFrame("idle", sS, frameWidth * i, frameHeight * 2.0f, frameWidth, frameHeight);
+	float frameWidth = 0.038f;
+	float frameHeight = 0.08f;
+	for (int i = 0; i < 4; i++) {
+		sonic->addFrame("idle", sS, (frameWidth * i) + 0.029f, frameHeight * 2.0f, frameWidth, frameHeight);
 	}
-	frameWidth = 0.038;
-	frameHeight = 0.08;
-	for (int i = 9; i < 21; i++) {
-		sonic->addFrame("run", sS, frameWidth * i, frameHeight * 3.2f, frameWidth, frameHeight);
+	frameWidth = 0.043f;
+	frameHeight = 0.082f;
+	for (int i = 0; i < 12; i++) {
+		sonic->addFrame("run", sS, (frameWidth * i) + 0.33f, frameHeight * 3.2f, frameWidth, frameHeight);
 	}
 	sonic->setDurationInSecs(1.0);
 	sonic->setCurrentAnimation("idle");
@@ -48,7 +48,7 @@ void Parcial::init() {
 	//
 	frameWidth = 0.04;
 	frameHeight = 0.08;
-	for (int i = 5; i < 10; i++) {
+	for (int i = 3; i < 8; i++) {
 		sign->addFrame(sS, frameWidth * i, frameHeight * 8.6f, frameWidth, frameHeight);
 	}
 	sign->setDurationInSecs(2.0);
