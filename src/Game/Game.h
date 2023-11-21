@@ -18,8 +18,8 @@ private:
     void update() override;
     void uninit() override;
     void draw();
-    void animationMovement(Animation* animation, string indexDown, string indexRight, string indexUp, string indexLeft); // Hardcodeadisimo, pero por ahora sirve.
-    void movement(Entity* player);
+    void animationMovement();
+    void movement(Animation* player);
 
 public:
     Game();
