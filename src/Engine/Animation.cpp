@@ -144,9 +144,11 @@ namespace MyEngine {
 	void Animation::setMirrorX(bool mirrorX) {
 		if (this->mirrorX == mirrorX) return;
 		this->mirrorX = mirrorX;
-		for (auto& frame : animations[currentAnimation]) {
-			for (int i = 0; i < 4; ++i) {
-				frame.uvCoords[i].u = 1.0f - frame.uvCoords[i].u;
+		for (auto& anim : animations) {
+			for (auto& frame : anim.second) {
+				for (int i = 0; i < 4; ++i) {
+					frame.uvCoords[i].u = 1.0f - frame.uvCoords[i].u;
+				}
 			}
 		}
 	}
@@ -154,9 +156,11 @@ namespace MyEngine {
 	void Animation::setMirrorY(bool mirrorY) {
 		if (this->mirrorY == mirrorY) return;
 		this->mirrorY = mirrorY;
-		for (auto& frame : animations[currentAnimation]) {
-			for (int i = 0; i < 4; ++i) {
-				frame.uvCoords[i].v = 1.0f - frame.uvCoords[i].v;
+		for (auto& anim : animations) {
+			for (auto& frame : anim.second) {
+				for (int i = 0; i < 4; ++i) {
+					frame.uvCoords[i].v = 1.0f - frame.uvCoords[i].v;
+				}
 			}
 		}
 	}

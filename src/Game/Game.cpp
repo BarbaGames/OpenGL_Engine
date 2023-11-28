@@ -85,9 +85,11 @@ void Game::update() {
 	sprite2->rotate({ 0, 0, 0, -0.1f });
 	if (direction > 0) {
 		sprite2->setMirrorX(false);
+		animCoin->setMirrorX(false);
 	}
 	else {
 		sprite2->setMirrorX(true);
+		animCoin->setMirrorX(true);
 	}
 	animCoin->update();
 	animBat->update();
