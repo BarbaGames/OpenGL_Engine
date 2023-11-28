@@ -107,6 +107,7 @@ namespace MyEngine
         glBindTexture(GL_TEXTURE_2D, textureID);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
         glDeleteBuffers(1, &EBO);
         glDeleteBuffers(1, &VBO);
         glDeleteVertexArrays(1, &VAO);
