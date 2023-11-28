@@ -20,7 +20,7 @@ namespace MyEngine {
 	}
 
 	Animation::~Animation() {
-
+		animations.clear();
 	}
 
 	bool Animation::isAnimationValid(string animationID) {

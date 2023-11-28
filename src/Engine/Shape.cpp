@@ -13,7 +13,7 @@ namespace MyEngine {
 	}
 
 	Shape::~Shape() {
-
+        vertex.clear();
 	}
 
 	void Shape::alignVertex() {
