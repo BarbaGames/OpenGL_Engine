@@ -41,6 +41,10 @@ namespace MyEngine {
 
 		double normalizedTime = fmod(elapsedTime, durationInSecs);
 		int totalFrames = static_cast<int>(animations[currentAnimation].size());
+
+		if (totalFrames < 1)
+			return;
+
 		int framesPerSecond = static_cast<int>(totalFrames / durationInSecs);
 		int currentFrame = static_cast<int>(normalizedTime * framesPerSecond) % totalFrames;
 
@@ -162,6 +166,9 @@ namespace MyEngine {
 	}
 
 	void Animation::draw() {
+		if (animations[currentAnimation].size() < 1)
+			return;
+
 		Frame& currentFrame = animations[currentAnimation][currentFrameIndex];
 
 		float vertexData[] = {

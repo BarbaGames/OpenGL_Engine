@@ -91,6 +91,7 @@ void Game::update() {
 	}
 	animCoin->update();
 	animBat->update();
+	animTest->update();
 
 	string title = "Engine Test (FPS: " + to_string(ETime::getFPS()) + ")";
 
