@@ -15,7 +15,7 @@ Game::Game()
                                                 /*Size/Scale*/ {static_cast<float>(Window::getWindowWidth()), 80, 0},
                                                 /*Color*/ {170.0f, 0.0f, 255.0f});
 
-    signboard = new Animation({Window::getWindowWidth() * .1f, Window::getWindowHeight() * .1f, 0}, {75, 75, 0},
+    cornerPikachu = new Animation({Window::getWindowWidth() * .15f, Window::getWindowHeight() * .15f, 0}, {170, 150, 0},
                               {255.0f, 255.0f, 255.0f});
     watermark = new Animation({Window::getWindowWidth() * .8f, Window::getWindowHeight() * .9f, 0}, {255, 43, 0},
                               {255.0f, 255.0f, 255.0f});
@@ -26,7 +26,7 @@ Game::Game()
                                 static_cast<float>(Window::getWindowHeight()), 0
                             }, {255.0f, 255.0f, 255.0f});
 
-    std::vector<Entity*> obstacles = {static_cast<Entity*>(signboard), static_cast<Entity*>(floorCollision)};
+    std::vector<Entity*> obstacles = {static_cast<Entity*>(cornerPikachu), static_cast<Entity*>(floorCollision)};
 
     collisionManager = new CollisionManager(obstacles);
 }
@@ -62,17 +62,17 @@ void Game::init()
     frameWidth = 1.f / 4.48f;
     frameHeight = 1.f / 2.69f;
 
-    signboard->addFrame("idle", spritesheetId, 1.85f * frameWidth, frameHeight * 1.67f, frameWidth,
+    cornerPikachu->addFrame("idle", spritesheetId, 1.85f * frameWidth, frameHeight * 1.67f, frameWidth,
                         frameHeight);
 
     frameWidth = 1.f / 3.32f;
     frameHeight = 1.f / 9.2f;
     watermark->addFrame("idle", spritesheetId, frameWidth * 2.3f, frameHeight * 5.9f, frameWidth, frameHeight);
-    player->setDurationInSecs(2.f);
+    player->setDurationInSecs(1.f);
     player->setCurrentAnimation("idle");
 
-    signboard->setDurationInSecs(2.f);
-    signboard->setCurrentAnimation("idle");
+    cornerPikachu->setDurationInSecs(2.f);
+    cornerPikachu->setCurrentAnimation("idle");
     watermark->setDurationInSecs(1.f);
     watermark->setCurrentAnimation("idle");
 }
@@ -82,7 +82,7 @@ void Game::update()
     movement(player);
     animationMovement();
     player->update();
-    signboard->update();
+    cornerPikachu->update();
     string title = "Engine Test (FPS: " + to_string(ETime::getFPS()) + ")";
 
     window->setTitle(title.c_str());
@@ -95,7 +95,7 @@ void Game::uninit()
     delete floorCollision;
     delete player;
     delete background;
-    delete signboard;
+    delete cornerPikachu;
 }
 
 void Game::draw()
@@ -104,7 +104,7 @@ void Game::draw()
 
     background->draw();
     player->draw();
-    signboard->draw();
+    cornerPikachu->draw();
     watermark->draw();
 }
 

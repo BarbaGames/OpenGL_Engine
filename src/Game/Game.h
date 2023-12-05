@@ -9,7 +9,7 @@ class Game : public BaseGame
 private:
     CollisionManager* collisionManager;
     Rectangle* floorCollision;
-    Animation* signboard;
+    Animation* cornerPikachu;
     Animation* watermark;
     Animation* player;
     Sprite* background;
