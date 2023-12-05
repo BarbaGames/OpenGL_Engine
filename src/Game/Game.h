@@ -10,6 +10,7 @@ private:
     CollisionManager* collisionManager;
     Rectangle* floorCollision;
     Animation* signboard;
+    Animation* watermark;
     Animation* player;
     Sprite* background;
     int direction;

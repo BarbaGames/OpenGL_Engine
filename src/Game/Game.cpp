@@ -15,9 +15,10 @@ Game::Game()
                                                 /*Size/Scale*/ {static_cast<float>(Window::getWindowWidth()), 80, 0},
                                                 /*Color*/ {170.0f, 0.0f, 255.0f});
 
-    signboard = new Animation({Window::getWindowWidth() * .5f, Window::getWindowHeight() * .7f, 0}, {75, 75, 0},
+    signboard = new Animation({Window::getWindowWidth() * .1f, Window::getWindowHeight() * .1f, 0}, {75, 75, 0},
                               {255.0f, 255.0f, 255.0f});
-
+    watermark = new Animation({Window::getWindowWidth() * .8f, Window::getWindowHeight() * .9f, 0}, {255, 43, 0},
+                              {255.0f, 255.0f, 255.0f});
     player = new Animation({Window::getWindowWidth() * .1f, Window::getWindowHeight() * .7f, 0}, {100, 100, 0},
                            {255.0f, 255.0f, 255.0f});
     background = new Sprite({Window::getWindowWidth() * .5f, Window::getWindowHeight() * .5f, 0}, {
@@ -36,35 +37,44 @@ Game::~Game()
 
 void Game::init()
 {
-    unsigned int atlasID = AssetLoader::loadImage("Sonic_Atlas.png", "Sonic");
+    unsigned int spritesheetId = AssetLoader::loadImage("pikachu-spritesheet.png", "Pikachu");
     unsigned int backgroundID = AssetLoader::loadImage("background.png", "Background");
     background->setImage(backgroundID);
 
+    float frameWidth = 1.0f / (847.f / 38.f);
+    float frameHeight = 1.0f / (396.f / 47.f);
 
-    float frameWidth = 1.0f / 22.8f;
-    float frameHeight = 1.0f / 11.07f;
-    std::cout << 121 / frameHeight;
-    for (int i = 8; i < 18; i++)
+    for (int i = 1; i < 3; i++)
     {
-        player->addFrame("walking", atlasID, frameWidth * i + frameWidth * 0.36f, frameHeight * 2.88f, frameWidth,
+        player->addFrame("idle", spritesheetId, frameWidth * i + frameWidth * 3.58f, 0, frameWidth, frameHeight);
+    }
+
+    frameWidth = 1.0f / 17.28f;
+    frameHeight = 1.0f / 9.42f;
+
+    for (int i = 0; i < 4; ++i)
+    {
+        player->addFrame("walking", spritesheetId, 10.79f * frameWidth + frameWidth * i, frameHeight * 1.45f,
+                         frameWidth,
                          frameHeight);
     }
-    player->addFrame("idle", atlasID, frameWidth * 7 + frameWidth * 0.36f, frameHeight * 2.88f, frameWidth, frameHeight);
-    frameWidth = 1.0f / 17;
-    frameHeight = 1.0f / 10;
-    for (int i = 3; i < 8; i++)
-    {
-        signboard->addFrame("idle", atlasID, frameWidth * i + frameWidth * 0.74f, frameHeight * 7, frameWidth,
-                            frameHeight);
-    }
 
+    frameWidth = 1.f / 4.48f;
+    frameHeight = 1.f / 2.69f;
+
+    signboard->addFrame("idle", spritesheetId, 1.85f * frameWidth, frameHeight * 1.67f, frameWidth,
+                        frameHeight);
+
+    frameWidth = 1.f / 3.32f;
+    frameHeight = 1.f / 9.2f;
+    watermark->addFrame("idle", spritesheetId, frameWidth * 2.3f, frameHeight * 5.9f, frameWidth, frameHeight);
     player->setDurationInSecs(2.f);
     player->setCurrentAnimation("idle");
 
     signboard->setDurationInSecs(2.f);
     signboard->setCurrentAnimation("idle");
-
-    
+    watermark->setDurationInSecs(1.f);
+    watermark->setCurrentAnimation("idle");
 }
 
 void Game::update()
@@ -95,6 +105,7 @@ void Game::draw()
     background->draw();
     player->draw();
     signboard->draw();
+    watermark->draw();
 }
 
 void Game::animationMovement()
@@ -124,7 +135,7 @@ void Game::movement(Animation* player)
     {
         // D
         transform.position.x += 2.0f;
-        
+
         if (!collisionManager->checkCollision(transform))
         {
             player->move({2.f, 0.f, 0.f});
@@ -154,7 +165,7 @@ void Game::movement(Animation* player)
     if (input->getKeyDown(Key_A))
     {
         // A
-        
+
         transform.position.x -= 2.0f;
         if (!collisionManager->checkCollision(transform))
         {
